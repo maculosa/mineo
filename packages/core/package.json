@@ -1,7 +1,7 @@
 {
   "name": "@prismo/core",
   "type": "module",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "description": "Prismo core package.",
   "author": "Banmao <banmao2020@mail.com>",
   "license": "MIT",
