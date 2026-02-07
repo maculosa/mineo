@@ -1,17 +1,17 @@
 {
-  "name": "@prismo/core",
+  "name": "@lumeo/core",
   "type": "module",
   "version": "0.0.1-beta.2",
-  "description": "Prismo core package.",
+  "description": "Lumeo core package.",
   "author": "Banmao <banmao2020@mail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/maculosa/prismo#readme",
+  "homepage": "https://github.com/maculosa/lumeo#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maculosa/prismo.git"
+    "url": "git+https://github.com/maculosa/lumeo.git"
   },
   "bugs": {
-    "url": "https://github.com/maculosa/prismo/issues"
+    "url": "https://github.com/maculosa/lumeo/issues"
   },
   "exports": {
     ".": "./dist/index.js",
