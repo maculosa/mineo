@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build:core": "pnpm run build --filter @prismo/core",
-    "release:core": "pnpm build:core &&pnpm release:only",
+    "release:core": "pnpm run build:core && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/",
     "changeset": "changeset"
   },
