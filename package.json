@@ -1,11 +1,11 @@
 {
-  "name": "prismo",
+  "name": "mineo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "build:core": "pnpm run build --filter @prismo/core",
+    "build:core": "pnpm run build --filter @mineo/core",
     "release:core": "pnpm run build:core && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/",
     "changeset": "changeset"
