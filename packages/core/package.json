@@ -1,17 +1,17 @@
 {
-  "name": "@lumeo/core",
+  "name": "@mineo/core",
   "type": "module",
-  "version": "0.0.1-beta.3",
-  "description": "Lumeo core package.",
+  "version": "0.0.0",
+  "description": "Mineo core package.",
   "author": "Banmao <banmao2020@mail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/maculosa/lumeo#readme",
+  "homepage": "https://github.com/maculosa/mineo#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maculosa/lumeo.git"
+    "url": "git+https://github.com/maculosa/mineo.git"
   },
   "bugs": {
-    "url": "https://github.com/maculosa/lumeo/issues"
+    "url": "https://github.com/maculosa/mineo/issues"
   },
   "exports": {
     ".": "./dist/index.js",
