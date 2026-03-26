@@ -1,16 +1,12 @@
 // import { defineConfig } from "vite";
 import { defineMineoConfig } from "@mineo/viteconfig";
-import { vueConfig } from '@mineo/viteconfig/vue';
+// import { vueConfig } from '@mineo/viteconfig/vue';
 
 // https://vite.dev/config/
-// export default defineConfig((configEnv) => {
-  
-//   return {
-//     ...vueConfig,
-//   }
-// })
 export default defineMineoConfig({
-  vue: true,
+  platform: 'vue',
+  tailwindcss: true,
+  icon: true,
   server: {
     host: true,
     port: 5800

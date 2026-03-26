@@ -6,7 +6,7 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
-export function reactPlugin(viteEnv: ViteEnv): any[] {
+export function reactPlugin(viteEnv: ViteEnv, config: { icon?: boolean }): any[] {
     const { VITE_ICON_PREFIX, VITE_ICON_LOCAL_PREFIX } = viteEnv
 
     const srcPath = getSrcPath()
@@ -17,7 +17,7 @@ export function reactPlugin(viteEnv: ViteEnv): any[] {
 
     return [
         react(),
-        Icons({
+        config.icon && Icons({
             compiler: 'jsx',
             jsx: 'react',
             customCollections: {
@@ -35,7 +35,7 @@ export function reactPlugin(viteEnv: ViteEnv): any[] {
             // 调整自动引入的文件位置
             dts: 'types/auto-import.d.ts',
         }),
-        createSvgIconsPlugin({
+        config.icon && createSvgIconsPlugin({
             iconDirs: [localIconPath],
             symbolId: `${VITE_ICON_LOCAL_PREFIX}-[dir]-[name]`,
             inject: 'body-last',

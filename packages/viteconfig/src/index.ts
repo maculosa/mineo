@@ -6,10 +6,11 @@ import type { ViteEnv } from './types';
 export interface MineoConfig extends UserConfig {
   platform?: 'vue' | 'react'
   tailwindcss?: boolean
+  icon?: boolean
 }
 
 export const defineMineoConfig = (mineoConfig: MineoConfig) => {
-  const { platform, tailwindcss } = mineoConfig
+  const { platform, tailwindcss, icon } = mineoConfig
 
   return defineConfig((configEnv) => {
     const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ViteEnv
@@ -20,7 +21,7 @@ export const defineMineoConfig = (mineoConfig: MineoConfig) => {
           '@/': fileURLToPath(new URL('./src', import.meta.url))
         }
       },
-      plugins: setupVitePlugins(viteEnv, { platform, tailwindcss }),
+      plugins: setupVitePlugins(viteEnv, { platform, tailwindcss, icon: icon || false }),
       ...mineoConfig,
     }
   })

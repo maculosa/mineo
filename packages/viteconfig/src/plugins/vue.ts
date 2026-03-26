@@ -12,7 +12,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJSX from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-export function vuePlugin(viteEnv: ViteEnv): any[] {
+export function vuePlugin(viteEnv: ViteEnv, config: { icon?: boolean }): any[] {
   const { VITE_ICON_PREFIX, VITE_ICON_LOCAL_PREFIX } = viteEnv
 
   const srcPath = getSrcPath()
@@ -26,15 +26,17 @@ export function vuePlugin(viteEnv: ViteEnv): any[] {
     vueJSX(),
     vueDevTools(),
     DefineOptions(),
-    Icons({
-      compiler: 'vue3',
-      customCollections: {
-        [collectionName]: FileSystemIconLoader(localIconPath, svg =>
-          svg.replace(/^<svg\s/, '<svg width="1em" height="1em" ')),
-      },
-      scale: 1,
-      defaultClass: 'inline-block',
-    }),
+    config.icon && [
+      Icons({
+        compiler: 'vue3',
+        customCollections: {
+          [collectionName]: FileSystemIconLoader(localIconPath, svg =>
+            svg.replace(/^<svg\s/, '<svg width="1em" height="1em" ')),
+        },
+        scale: 1,
+        defaultClass: 'inline-block',
+      }),
+    ],
     AutoImport({
       imports: [
         'vue',
@@ -55,7 +57,7 @@ export function vuePlugin(viteEnv: ViteEnv): any[] {
         }),
       ],
     }),
-    createSvgIconsPlugin({
+    config.icon && createSvgIconsPlugin({
       iconDirs: [localIconPath],
       symbolId: `${VITE_ICON_LOCAL_PREFIX}-[dir]-[name]`,
       inject: 'body-last',

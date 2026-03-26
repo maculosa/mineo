@@ -14,10 +14,10 @@ export function setupVitePlugins(viteEnv: ViteEnv, config: MineoConfig) {
   ]
   switch (config.platform) {
     case 'vue':
-      plugins.push(...vuePlugin(viteEnv))
+      plugins.push(...vuePlugin(viteEnv, { icon: config.icon }))
       break
     case 'react':
-      plugins.push(...reactPlugin(viteEnv))
+      plugins.push(...reactPlugin(viteEnv, { icon: config.icon }))
       break
     default:
       break
