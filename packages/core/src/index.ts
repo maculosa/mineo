@@ -1,3 +1,1 @@
-export function useFormGraph() {
-    /** 表单图 */
-}
+export * from './form-graph'
