@@ -6,7 +6,9 @@
   "private": true,
   "scripts": {
     "build:core": "pnpm run build --filter @mineo/core",
+    "build:viteconfig": "pnpm run build --filter @mineo/viteconfig",
     "release:core": "pnpm run build:core && pnpm release:only",
+    "release:viteconfig": "pnpm run build:viteconfig && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/",
     "changeset": "changeset"
   },
