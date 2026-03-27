@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ProButton } from '@mineo/ui'
 </script>
 
 <template>
-  <HelloWorld />
+  <ProButton>Click me</ProButton>
 </template>
