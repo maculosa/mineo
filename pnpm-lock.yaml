@@ -180,6 +180,9 @@ importers:
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
+      unplugin-vue:
+        specifier: ^7.1.1
+        version: 7.1.1(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(vue@3.5.31(typescript@5.9.3))(yaml@2.8.2)
     devDependencies:
       tsdown:
         specifier: ^0.21.6
@@ -4069,6 +4072,12 @@ packages:
   unplugin-vue-define-options@3.1.2:
     resolution: {integrity: sha512-0pp2PpkDwqo1fjpSEG+UPaBNv/NW6u8pY8z2Fx67y/X2V+4CfjGHyA/G1jrcnABl8kZbz1Ycdqfd/7XwGLDNZw==}
     engines: {node: '>=20.19.0'}
+
+  unplugin-vue@7.1.1:
+    resolution: {integrity: sha512-0171rToKyJtoz+faE9CSGtAhCF7//t8sJueyyfZujf4RcKtoHLU/wqcsnuH5aq3tDB+I/Tg6IXiWgPvI+TK/zw==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      vue: ^3.2.25
 
   unplugin-yaml@4.0.1:
     resolution: {integrity: sha512-7O9HW+01vQ4RS9uDnI6HqXULoA35Xye3bHYnryxRs0UzUoXNZ5HLrdJwO2Rml6/rgSDAOSHJF0/comN4z1MQiA==}
@@ -8572,6 +8581,29 @@ snapshots:
       unplugin: 2.3.11
     transitivePeerDependencies:
       - vue
+
+  unplugin-vue@7.1.1(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(vue@3.5.31(typescript@5.9.3))(yaml@2.8.2):
+    dependencies:
+      '@jridgewell/gen-mapping': 0.3.13
+      '@jridgewell/trace-mapping': 0.3.31
+      '@vue/reactivity': 3.5.31
+      obug: 2.1.1
+      unplugin: 3.0.0
+      vite: 8.0.2(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.2)
+      vue: 3.5.31(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@vitejs/devtools'
+      - esbuild
+      - jiti
+      - less
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - yaml
 
   unplugin-yaml@4.0.1(esbuild@0.27.3)(rolldown@1.0.0-rc.11)(rollup@4.57.1)(vite@8.0.2(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.2)):
     dependencies:
