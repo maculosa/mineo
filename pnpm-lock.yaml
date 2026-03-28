@@ -17,9 +17,24 @@ importers:
       '@mineo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@mineo/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.31(typescript@5.9.3))
+      class-variance-authority:
+        specifier: ^0.7.1
+        version: 0.7.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      lucide-vue-next:
+        specifier: ^1.0.0
+        version: 1.0.0(vue@3.5.31(typescript@5.9.3))
+      tailwind-merge:
+        specifier: ^3.5.0
+        version: 3.5.0
       tailwindcss:
         specifier: ^4.2.2
         version: 4.2.2
@@ -171,6 +186,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@mineo/utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@vueuse/core':
+        specifier: ^14.2.1
+        version: 14.2.1(vue@3.5.31(typescript@5.9.3))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -193,9 +214,15 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(vue@3.5.31(typescript@5.9.3))(yaml@2.8.2)
     devDependencies:
+      '@tailwindcss/vite':
+        specifier: ^4.2.2
+        version: 4.2.2(vite@8.0.2(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.2))
       '@tsdown/css':
         specifier: ^0.21.6
         version: 0.21.6(jiti@2.6.1)(postcss@8.5.8)(tsdown@0.21.6)(yaml@2.8.2)
+      tailwindcss:
+        specifier: ^4.2.2
+        version: 4.2.2
       tsdown:
         specifier: ^0.21.6
         version: 0.21.6(@tsdown/css@0.21.6)(typescript@5.9.3)(vue-tsc@3.2.6(typescript@5.9.3))
@@ -205,6 +232,15 @@ importers:
       vue-tsc:
         specifier: ^3.2.6
         version: 3.2.6(typescript@5.9.3)
+
+  packages/utils:
+    dependencies:
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      tailwind-merge:
+        specifier: ^3.5.0
+        version: 3.5.0
 
   packages/viteconfig:
     dependencies:

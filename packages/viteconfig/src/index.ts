@@ -7,10 +7,11 @@ export interface MineoConfig extends UserConfig {
   platform?: 'vue' | 'react'
   tailwindcss?: boolean
   icon?: boolean
+  alias?: Record<string, string>
 }
 
 export const defineMineoConfig = (mineoConfig: MineoConfig) => {
-  const { platform, tailwindcss, icon } = mineoConfig
+  const { platform, tailwindcss, icon, alias } = mineoConfig
 
   return defineConfig((configEnv) => {
     const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ViteEnv
@@ -18,7 +19,8 @@ export const defineMineoConfig = (mineoConfig: MineoConfig) => {
     return {
       resolve: {
         alias: {
-          '@/': fileURLToPath(new URL('./src', import.meta.url))
+          '@/': fileURLToPath(new URL('./src', import.meta.url)),
+          ...alias
         }
       },
       plugins: setupVitePlugins(viteEnv, { platform, tailwindcss, icon: icon || false }),

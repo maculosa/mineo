@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ProButton } from '@mineo/ui'
+import { Button, Input } from '@mineo/ui'
 </script>
 
 <template>
-  <ProButton>Click me</ProButton>
-</template>
+  <div class="flex items-center gap-1">
+    <Input placeholder="Enter" class="w-40" />
+    <Button>Click me</Button>
+  </div>
+ </template>

@@ -1,6 +1,5 @@
 // import { defineConfig } from "vite";
 import { defineMineoConfig } from "@mineo/viteconfig";
-// import { vueConfig } from '@mineo/viteconfig/vue';
 
 // https://vite.dev/config/
 export default defineMineoConfig({
@@ -10,5 +9,5 @@ export default defineMineoConfig({
   server: {
     host: true,
     port: 5800
-  }
+  },
 })
