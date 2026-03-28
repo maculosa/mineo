@@ -1,12 +1,38 @@
 <script setup lang="ts">
-import { Button, Input } from '@mineo/ui'
-import { ProText } from '@mineo/pro-ui'
+import { Button, Input, Typography } from '@mineo/ui'
 </script>
 
 <template>
   <div class="flex items-center gap-1">
     <Input placeholder="Enter" class="w-40" />
     <Button>Click me</Button>
-    <ProText>Hello Pro Text</ProText>
+  </div>
+  <div class="w-100">
+
+    <ProText color="destructive">Hello Pro Text</ProText>
+    <Typography tag="h1">Hello Typography h1</Typography>
+    <Typography tag="h2">Hello Typography h2</Typography>
+    <Typography tag="h3">Hello Typography h3</Typography>
+    <Typography tag="h4">Hello Typography h4</Typography>
+    <Typography tag="p">Hello Typography p</Typography>
+    <Typography tag="span">Hello Typography span</Typography>
+    <Typography tag="blockquote">Hello Typography blockquote</Typography>
+    <Typography tag="code">Hello Typography code</Typography>
+    <Typography strong>Hello Typography strong</Typography>
+    <Typography italic>Hello Typography italic</Typography>
+    <Typography underline>Hello Typography underline</Typography>
+    <Typography delete>Hello Typography delete</Typography>
+    <Typography truncate>
+      Hello Typography delete right, 
+    我是一个截断的文字, 我会被截断为 "我是一个截断的文字", 我会被截断为 "我是一个截断的文字"
+    </Typography>
+    <Typography :lineClamp="2">
+      Hello Typography delete right, 
+    我是一个截断的文字, 我会被截断为 "我是一个截断的文字", 我会被截断为 "我是一个截断的文字"
+    </Typography>
+
+    <Typography copyable>
+      Hello Typography copyable
+    </Typography>
   </div>
  </template>
