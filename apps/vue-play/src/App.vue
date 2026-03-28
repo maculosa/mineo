@@ -1,12 +1,52 @@
 <script setup lang="ts">
-import { Button, Input, Typography } from '@mineo/ui'
+import { Typography } from '@mineo/ui'
+import type { ProSelectItem } from '@mineo/pro-ui'
+import { ProSelect, ProInput } from '@mineo/pro-ui'
+import { ref } from 'vue';
+
+const modelValue = ref('')
+const items = ref<ProSelectItem[]>([
+  { value: 'other', label: 'Other' },
+  { value: 'fruits', label: 'Fruits', type: 'group', children: [
+    { value: 'apple', label: 'Apple' },
+    { value: 'banana', label: 'Banana' },
+    { value: 'orange', label: 'Orange' },
+  ] },
+  { value: 'vegetables', label: 'Vegetables', type: 'group', children: [
+    { value: 'carrot', label: 'Carrot' },
+    { value: 'onion', label: 'Onion' },
+    { value: 'potato', label: 'Potato' },
+  ] },
+  { value: 'meat', label: 'Meat', type: 'group', children: [
+    { value: 'beef', label: 'Beef' },
+    { value: 'chicken', label: 'Chicken' },
+    { value: 'pork', label: 'Pork' },
+  ] },
+  { value: 'fish', label: 'Fish', type: 'group', children: [
+    { value: 'salmon', label: 'Salmon' },
+    { value: 'tuna', label: 'Tuna' },
+    { value: 'shark', label: 'Shark' },
+  ] },
+])
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
-    <Input placeholder="Enter" class="w-40" />
-    <Button>Click me</Button>
+  <div>
+    <Typography strong class="mb-2">ProSelect</Typography>
+    <ProSelect
+      v-model="modelValue"
+      :items="items"
+      placeholder="Select a food"
+    />
   </div>
+  <div>
+    <Typography strong class="mb-2">ProInput</Typography>
+    <ProInput
+      v-model="modelValue"
+      placeholder="Search a food"
+    />
+  </div>
+
   <div class="w-100">
 
     <ProText color="destructive">Hello Pro Text</ProText>

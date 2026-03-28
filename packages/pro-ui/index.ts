@@ -1,4 +1,4 @@
 /**
  * Pro UI
  */
-export * from './packages/pro-text'
+export * from './packages/pro-form'

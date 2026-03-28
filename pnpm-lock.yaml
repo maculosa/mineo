@@ -156,6 +156,9 @@ importers:
       '@mineo/utils':
         specifier: workspace:*
         version: link:../utils
+      lucide-vue-next:
+        specifier: ^1.0.0
+        version: 1.0.0(vue@3.5.31(typescript@5.9.3))
       vue:
         specifier: ^3.5.31
         version: 3.5.31(typescript@5.9.3)
