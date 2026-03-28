@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mineo/pro-ui": "workspace:*",
     "@mineo/ui": "workspace:*",
     "@mineo/utils": "workspace:*",
     "@vueuse/core": "^14.2.1",
