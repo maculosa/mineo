@@ -1,37 +1,38 @@
 <script setup lang="ts">
-import { Typography } from '@mineo/ui'
-import type { ProSelectItem } from '@mineo/pro-ui'
-import { ProSelect, ProInput } from '@mineo/pro-ui'
-import { ref } from 'vue';
+// import { Typography } from '@mineo/ui'
+// import type { ProSelectItem } from '@mineo/pro-ui'
+// import { ProSelect, ProInput } from '@mineo/pro-ui'
+// import { ref } from 'vue';
 
-const modelValue = ref('')
-const items = ref<ProSelectItem[]>([
-  { value: 'other', label: 'Other' },
-  { value: 'fruits', label: 'Fruits', type: 'group', children: [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'orange', label: 'Orange' },
-  ] },
-  { value: 'vegetables', label: 'Vegetables', type: 'group', children: [
-    { value: 'carrot', label: 'Carrot' },
-    { value: 'onion', label: 'Onion' },
-    { value: 'potato', label: 'Potato' },
-  ] },
-  { value: 'meat', label: 'Meat', type: 'group', children: [
-    { value: 'beef', label: 'Beef' },
-    { value: 'chicken', label: 'Chicken' },
-    { value: 'pork', label: 'Pork' },
-  ] },
-  { value: 'fish', label: 'Fish', type: 'group', children: [
-    { value: 'salmon', label: 'Salmon' },
-    { value: 'tuna', label: 'Tuna' },
-    { value: 'shark', label: 'Shark' },
-  ] },
-])
+// const modelValue = ref('')
+// const items = ref<ProSelectItem[]>([
+//   { value: 'other', label: 'Other' },
+//   { value: 'fruits', label: 'Fruits', type: 'group', children: [
+//     { value: 'apple', label: 'Apple' },
+//     { value: 'banana', label: 'Banana' },
+//     { value: 'orange', label: 'Orange' },
+//   ] },
+//   { value: 'vegetables', label: 'Vegetables', type: 'group', children: [
+//     { value: 'carrot', label: 'Carrot' },
+//     { value: 'onion', label: 'Onion' },
+//     { value: 'potato', label: 'Potato' },
+//   ] },
+//   { value: 'meat', label: 'Meat', type: 'group', children: [
+//     { value: 'beef', label: 'Beef' },
+//     { value: 'chicken', label: 'Chicken' },
+//     { value: 'pork', label: 'Pork' },
+//   ] },
+//   { value: 'fish', label: 'Fish', type: 'group', children: [
+//     { value: 'salmon', label: 'Salmon' },
+//     { value: 'tuna', label: 'Tuna' },
+//     { value: 'shark', label: 'Shark' },
+//   ] },
+// ])
 </script>
 
 <template>
-  <div>
+  <router-view />
+  <!-- <div>
     <Typography strong class="mb-2">ProSelect</Typography>
     <ProSelect
       v-model="modelValue"
@@ -74,5 +75,5 @@ const items = ref<ProSelectItem[]>([
     <Typography copyable>
       Hello Typography copyable
     </Typography>
-  </div>
+  </div> -->
  </template>
