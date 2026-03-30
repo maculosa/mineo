@@ -2,7 +2,7 @@
 import { DataTable, DataTableAction } from '@mineo/pro-ui';
 import { Button } from '@mineo/ui';
 import { Typography } from '@mineo/ui';
-import { Edit, Plus, Minus } from 'lucide-vue-next';
+import { Edit, Plus, Minus, Undo } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 interface Phone {
@@ -17,6 +17,7 @@ interface Phone {
 }
 
 const columns = ref<DataTableColumn<Phone>[]>([
+    // { type: 'selection' },
     { title: '品牌', dataIndex: 'brand', width: 100 },
     { title: '价格', dataIndex: 'price', width: 100 },
     { title: '型号', dataIndex: 'model', width: 100 },
@@ -29,11 +30,12 @@ const columns = ref<DataTableColumn<Phone>[]>([
             const actions = [
                 { label: '添加到购物车', key: 'add', icon: <Plus /> },
                 { label: '编辑', key: 'edit', icon: <Edit /> },
-                { label: '删除', key: 'remove', icon: <Minus /> },
+                { label: '撤销', key: 'undo', disabled: true, icon: <Undo /> },
+                { label: '删除', key: 'remove', variant: 'destructive', separator: true, icon: <Minus /> },
             ]
             return <DataTableAction items={actions} splitNum={2} iconOnly={true} />
         },
-     },
+    },
 ])
 
 const dataSource = ref<Phone[]>([
