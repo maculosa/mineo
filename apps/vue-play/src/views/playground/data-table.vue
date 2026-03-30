@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { DataTable, DataTableAction } from '@mineo/pro-ui';
+import { DataTable, DataTableAction, ProCard } from '@mineo/pro-ui';
 import { Badge, Button, Typography } from '@mineo/ui';
 import { Edit, Plus, Minus, Undo } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -27,6 +27,7 @@ const columns = ref<DataTableColumn<Phone>[]>([
     { title: '总金额', dataIndex: 'total', currency: { symbol: '¥', decimal: 2, thousand: ',' } },
     { title: '创建时间', dataIndex: 'createdAt', width: 200 },
     { title: '操作', dataIndex: 'action',
+        fixed: 'right',
         render: (value, row) => {
             const actions = [
                 { label: '添加到购物车', key: 'add', icon: <Plus /> },
@@ -70,6 +71,7 @@ const dataSource = ref<Phone[]>([
 </script>
 
 <template>
-    <Typography strong>Hello DataTable</Typography>
-    <DataTable :columns="columns" :data="dataSource" />
+    <ProCard class="w-200" title="Phone List">
+        <DataTable :columns="columns" :data="dataSource" />
+    </ProCard>
 </template>
