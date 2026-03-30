@@ -162,7 +162,7 @@ export const DataTable = defineComponent({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} class="relative">
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {!header.isPlaceholder && (
