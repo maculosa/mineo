@@ -51,6 +51,31 @@ export interface DataTableColumn<TData, TValue> {
      */
     copyable?: boolean
     /**
+     * 是否为金额列
+     * @description 是否为金额列, 金额列会自动格式化为金额格式, 例如 1234.56 -> 1,234.56
+     * @default undefined
+     */
+    currency?: {
+        /**
+         * 货币符号
+         * @description 货币符号, 例如 '$', '¥'
+         * @default '$'
+         */
+        symbol?: string
+        /**
+         * 货币小数位数
+         * @description 货币小数位数, 例如 2
+         * @default 2
+         */
+        decimal?: number
+        /**
+         * 货币千分位分隔符
+         * @description 货币千分位分隔符, 例如 ','
+         * @default ','
+         */
+        thousand?: string
+    } | true,
+    /**
      * 是否可调整宽度
      * @description 是否可调整列宽度
      * @default undefined

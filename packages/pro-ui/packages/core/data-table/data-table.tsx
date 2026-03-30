@@ -26,15 +26,54 @@ export function transformColumn<TData, TValue = any>(
   const columnDefs: ColumnDef<TData>[] = [];
 
   columns.forEach((column: DataTableColumn<TData, TValue>) => {
+    const { align, titleAlign, currency } = column;
+
+    const isCurrency = currency && typeof currency === 'object';
+    const currencyConfig = isCurrency ? currency : {
+      symbol: '¥',
+      decimal: 2,
+      thousand: ',',
+    };
+
+    const headerAlign = () => {
+      if (currency) {
+        return 'text-right';
+      } else if (titleAlign) {
+        return `text-${titleAlign}`
+      } else if (align) {
+        return `text-${align}`
+      }
+      return 'text-left';
+    };
+    const cellAlign = () => {
+      if (currency) {
+        return 'text-right';
+      } else if (align) {
+        return `text-${align}`
+      }
+      return 'text-left';
+    };
+
     columnDefs.push({
       accessorKey: column.dataIndex,
       header: () => {
-        const headerClass = cn("text-left font-medium");
+        const headerClass = cn(headerAlign(), "font-medium");
         return <div class={headerClass}>{column.title}</div>;
       },
       cell: ({ row }) => {
+        if (isCurrency) {
+          const { symbol = '¥', decimal = 2, thousand = ',' } = currencyConfig;
+          const value = row.getValue(column.dataIndex as string);
+          const formattedValue = value.toFixed(decimal).replace(/\B(?=(\d{3})+(?!\d))/g, thousand);
+          const currencyAlign = column.align || 'text-right';
+          return (
+            <div class={cn(cellAlign(), column.className)}>
+              {symbol}{formattedValue}
+            </div>
+          );
+        }
         return (
-          <div class={cn("text-left font-medium", column.className)}>
+          <div class={cn(cellAlign(), column.className)}>
             {column.render?.(row.getValue(column.dataIndex as string), row) ||
               row.getValue(column.dataIndex as string)}
           </div>
