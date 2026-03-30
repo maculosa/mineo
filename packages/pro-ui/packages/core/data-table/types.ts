@@ -108,12 +108,44 @@ export interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export interface DataTableActionItem {
+/**
+ * 表格操作项
+ * @description 表格操作项的属性, 包含标签、键、图标、是否禁用、是否分隔符、点击回调函数
+ */
+export interface DataTableActionItem<TData> {
+    /**
+     * 操作项标签
+     * @description 操作项的标签, 用于显示在操作项中
+     * @default undefined
+     */
     label?: string
+    /**
+     * 操作项键
+     * @description 操作项的键, 用于唯一标识操作项
+     */
     key: string | number
+    /**
+     * 操作项图标
+     * @description 操作项的图标, 用于显示操作项中
+     * @default undefined
+     */
     icon?: VNodeChild
+    /**
+     * 是否禁用
+     * @description 是否禁用操作项, 点击后无反应
+     * @default undefined
+     */
     disabled?: boolean
+    /**
+     * 是否分隔符
+     * @description 是否分隔符, 用于在操作项中添加分隔线
+     * @default undefined
+     */
     separator?: boolean
+    /**
+     * 点击回调函数
+     * @param row 点击操作项时触发的回调函数, 参数为当前行数据
+     * @default undefined
+     */
     onClick: (row: Row<TData>) => void
 }
-
