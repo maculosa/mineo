@@ -1,7 +1,5 @@
-// import { defineConfig } from "vite";
 import { defineMineoConfig } from "@mineo/viteconfig";
 
-// https://vite.dev/config/
 export default defineMineoConfig({
   platform: 'vue',
   tailwindcss: true,
