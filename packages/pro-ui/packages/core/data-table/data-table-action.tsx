@@ -1,4 +1,5 @@
 import type { DataTableActionItem } from "./types";
+import { computed } from "vue";
 
 import { MoreHorizontalIcon } from "lucide-vue-next";
 import {
@@ -64,6 +65,8 @@ export const DataTableActionDropdown = defineComponent({
   setup(props) {
     const { items } = props;
 
+    const count = computed(() => items.length);
+
     return () => (
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -74,12 +77,13 @@ export const DataTableActionDropdown = defineComponent({
         <DropdownMenuContent>
           {items.map((item) => (
             <>
-              {item.separator && (
+              {item.separator && count.value > 1 && (
                 <DropdownMenuSeparator key={`${item.key}-separator`} />
               )}
               <DropdownMenuItem
                 key={item.key}
                 disabled={item.disabled}
+                variant={item.variant || undefined}
                 onClick={() => item.onClick(row)}
               >
                 {item.icon}
