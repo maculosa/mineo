@@ -62,8 +62,8 @@ export function transformColumn<TData, TValue = any>(
         return <div class={headerClass}>{column.title}</div>;
       },
       cell: ({ row }) => {
-        if (currency) {
-          const { symbol = '$', decimal = 2, thousand = ',' } = currencyConfig;
+        if (isCurrency) {
+          const { symbol = '¥', decimal = 2, thousand = ',' } = currencyConfig;
           const value = row.getValue(column.dataIndex as string);
           const formattedValue = value.toFixed(decimal).replace(/\B(?=(\d{3})+(?!\d))/g, thousand);
           const currencyAlign = column.align || 'text-right';
