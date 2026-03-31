@@ -229,11 +229,7 @@ export const DataTable = defineComponent({
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colspan={columnsValue.value.length} class="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
+            <EmptyRow />
           )}
         </TableBody>
       </Table>
