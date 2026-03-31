@@ -1,4 +1,4 @@
-import type { DataTableColumn, DataTableProps } from "./types";
+import type { DataTableColumn, DataTableProps, DataTablePagination } from "./types";
 import type { PropType } from "vue";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { defineComponent, ref } from "vue";
@@ -66,7 +66,7 @@ export function transformColumn<TData, TValue = any>(
       cell: ({ row }) => {
         if (isCurrency) {
           const { symbol = '¥', decimal = 2, thousand = ',' } = currencyConfig;
-          const value = row.getValue(column.dataIndex as string);
+          const value = Number(row.getValue(column.dataIndex as string));
           const formattedValue = value.toFixed(decimal).replace(/\B(?=(\d{3})+(?!\d))/g, thousand);
           const currencyAlign = column.align || 'text-right';
           return (
@@ -99,11 +99,11 @@ export const DataTable = defineComponent({
   name: "DataTable",
   props: {
     columns: {
-      type: Array as PropType<DataTableColumn<TData, TValue>[]>,
+      type: Array as PropType<DataTableColumn<any, any>[]>,
       default: () => [],
     },
     data: {
-      type: Array as PropType<TData[]>,
+      type: Array as PropType<any[]>,
       default: () => [],
     },
     pagination: {
@@ -116,11 +116,15 @@ export const DataTable = defineComponent({
     }
   },
   setup(props) {
-    const { columns, data, pagination } = props as DataTableProps<TData, TValue>; 
+    const { columns, data, pagination } = props as DataTableProps<any, any>; 
     const sorting = ref([]);
     const columnFilters = ref([]);
     const columnVisibility = ref({});
     const rowSelection = ref({});
+    const paginationState = ref({
+      pageIndex: pagination.current - 1,
+      pageSize: pagination.pageSize,
+    });
 
     const table = useVueTable({
       get data() {
@@ -140,25 +144,28 @@ export const DataTable = defineComponent({
         get rowSelection() {
           return rowSelection.value;
         },
-        // get pagination() {
-        //   return pagination.value;
-        // },
+        get pagination() {
+          return paginationState.value;
+        },
       },
       enableRowSelection: true,
       onSortingChange: (updater) => {
-        sorting.value = updater;
+        sorting.value = typeof updater === 'function' ? updater(sorting.value) : updater;
       },
       onColumnFiltersChange: (updater) => {
-        columnFilters.value = updater;
+        columnFilters.value = typeof updater === 'function' ? updater(columnFilters.value) : updater;
       },
       onColumnVisibilityChange: (updater) => {
-        columnVisibility.value = updater;
+        columnVisibility.value = typeof updater === 'function' ? updater(columnVisibility.value) : updater;
       },
       onRowSelectionChange: (updater) => {
-        rowSelection.value = updater;
+        rowSelection.value = typeof updater === 'function' ? updater(rowSelection.value) : updater;
       },
       onPaginationChange: (updater) => {
-        pagination.value = updater;
+        const newPagination = typeof updater === 'function' ? updater(paginationState.value) : updater;
+        paginationState.value = newPagination;
+        pagination.current = newPagination.pageIndex + 1;
+        pagination.pageSize = newPagination.pageSize;
       },
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),

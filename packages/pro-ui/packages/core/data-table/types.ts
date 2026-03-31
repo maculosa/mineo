@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/vue-table"
 import { VNodeChild } from "vue"
 
-export interface DataTableColumn<TData, TValue> {
+export interface DataTableColumn<TData = any, TValue = any> {
     /**
      * 列标题
      * @description 列的 title 文本, 可以是字符串或函数, 函数的参数为行数据
@@ -131,6 +131,7 @@ export interface DataTableColumn<TData, TValue> {
 export interface DataTableProps<TData, TValue> {
     columns: DataTableColumn<TData, TValue>[]
     data: TData[]
+    pagination?: DataTablePagination
 }
 
 /**
