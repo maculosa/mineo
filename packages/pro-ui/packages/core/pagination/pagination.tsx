@@ -100,6 +100,7 @@ export const ProPagination = defineComponent({
           return (
             <Pagination
               v-model:page={props.page}
+              itemsPerPage={props.pageSize}
               class="flex items-center gap-1"
             >
               <PaginationContent class="flex items-center gap-1">
@@ -117,6 +118,7 @@ export const ProPagination = defineComponent({
                       key={p}
                       class={props.page === p ? "pointer-events-none" : "cursor-pointer"}
                       isActive={props.page === p}
+                      value={p}
                       onClick={() => handlePageChange(p)}
                     >
                       {p}
