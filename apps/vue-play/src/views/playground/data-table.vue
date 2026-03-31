@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { DataTable, DataTableAction, ProCard } from '@mineo/pro-ui';
-import { Badge, Button, Typography } from '@mineo/ui';
+import { DataTable, DataTableAction, ProCard, type DataTableColumn } from '@mineo/pro-ui';
+import { Badge } from '@mineo/ui';
 import { Edit, Plus, Minus, Undo } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -14,13 +14,14 @@ interface Phone {
     spec: string;
     total: number;
     createdAt: string;
+    [key: string]: any;
 }
 
 const columns = ref<DataTableColumn<Phone>[]>([
     // { type: 'selection' },
     { title: '品牌', dataIndex: 'brand', width: 100 },
     { title: '型号', dataIndex: 'model', width: 100 },
-    { title: '颜色', dataIndex: 'color', width: 100, render: (value, row) => <Badge>{value}</Badge> },
+    { title: '颜色', dataIndex: 'color', width: 100, render: (value: string) => <Badge>{value}</Badge> },
     { title: '规格', dataIndex: 'spec', copyable: true },
     { title: '数量', dataIndex: 'quantity' },
     { title: '价格', dataIndex: 'price', width: 100, currency: { symbol: '¥', decimal: 2, thousand: ',' } },
@@ -28,14 +29,14 @@ const columns = ref<DataTableColumn<Phone>[]>([
     { title: '创建时间', dataIndex: 'createdAt', width: 200 },
     { title: '操作', dataIndex: 'action',
         fixed: 'right',
-        render: (value, row) => {
+        render: (_: any, row: Phone) => {
             const actions = [
-                { label: '添加到购物车', key: 'add', icon: <Plus /> },
-                { label: '编辑', key: 'edit', icon: <Edit /> },
-                { label: '撤销', key: 'undo', disabled: true, icon: <Undo /> },
+                { label: '添加到购物车', key: 'add', variant: 'outline', icon: <Plus /> },
+                { label: '编辑', key: 'edit', variant: 'outline', icon: <Edit /> },
+                { label: '撤销', key: 'undo', variant: 'outline', disabled: true, icon: <Undo /> },
                 { label: '删除', key: 'remove', variant: 'destructive', separator: true, icon: <Minus /> },
             ]
-            return <DataTableAction items={actions} splitNum={2} iconOnly={true} />
+            return <DataTableAction group items={actions} splitNum={2} iconOnly={true} />
         },
     },
 ])
@@ -51,7 +52,6 @@ const dataSource = ref<Phone[]>([
         spec: '16GB 5.4" 6K 120Hz 5G 128GB',
         total: 17697,
         createdAt: '2026-03-30 15:52:32',
-        action: 'Add to Cart',
     },
     {
         id: 2,
@@ -63,7 +63,6 @@ const dataSource = ref<Phone[]>([
         spec: '16GB 5.8" 6K 120Hz 5G 512GB',
         total: 108990,
         createdAt: '2026-03-30 15:52:32',
-        action: 'Add to Cart',
     },
     {
         id: 3,
@@ -75,12 +74,11 @@ const dataSource = ref<Phone[]>([
         spec: '16GB 5.8" 6K 120Hz 5G 512GB',
         total: 128990,
         createdAt: '2026-03-30 15:52:32',
-        action: 'Add to Cart',
     },
 ])
 
 const pagination = ref({
-    page: 1,
+    current: 1,
     pageSize: 10,
     total: 960,
 })

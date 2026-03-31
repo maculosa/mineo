@@ -125,7 +125,7 @@ export interface DataTableColumn<TData = any, TValue = any> {
      * @param row 行数据
      * @default undefined
      */
-    render?: (value: TValue, row: Row<TData>) => VNodeChild
+    render?: (value: TValue, row: TData) => VNodeChild
 }
 
 export interface DataTableProps<TData, TValue> {
@@ -166,7 +166,7 @@ export interface DataTableActionItem<TData> {
      * @description 操作项的样式, 可选值为 'primary', 'secondary', 'tertiary', 'danger'
      * @default undefined
      */
-    variant?: 'primary' | 'secondary' | 'tertiary' | 'danger'
+    variant?: string
     /**
      * 操作项图标
      * @description 操作项的图标, 用于显示操作项中
@@ -190,7 +190,7 @@ export interface DataTableActionItem<TData> {
      * @param row 点击操作项时触发的回调函数, 参数为当前行数据
      * @default undefined
      */
-    onClick: (row: Row<TData>) => void
+    onClick?: (row: TData) => void
 }
 
 export interface DataTablePagination {

@@ -9,7 +9,34 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   Button,
+  ButtonGroup
 } from "@mineo/ui";
+
+export const DataTableActionRoot = defineComponent({
+  name: "DataTableActionRoot",
+  props: {
+    group: {
+      type: Boolean,
+      default: false,
+    }
+  },
+  setup(props, { slots }) {
+    const { group } = props;
+
+    if (group) {
+      return () => (
+        <ButtonGroup>
+          {slots.default?.()}
+        </ButtonGroup>
+      );
+    } 
+    return () => (
+      <div class="flex items-center gap-1">
+        {slots.default?.()}
+      </div>
+    )
+  }
+})
 
 export const DataTableAction = defineComponent({
   name: "DataTableAction",
@@ -26,18 +53,23 @@ export const DataTableAction = defineComponent({
       type: Boolean,
       default: false,
     },
+    group: {
+      type: Boolean,
+      default: false,
+    }
   },
   setup(props) {
-    const { items, splitNum, iconOnly } = props;
+    const { items, splitNum, iconOnly, group } = props; 
 
     const displayItems = items.slice(0, splitNum);
     const dropdownItems = items.slice(splitNum);
 
     return () => (
-      <div class="flex items-center gap-1">
+      <DataTableActionRoot group={group}>
         {displayItems.map((item) => (
           <Button
             key={item.key}
+            variant={item.variant || undefined}
             size={iconOnly ? "icon-sm" : "sm"}
             disabled={item.disabled}
             onClick={item.onClick}
@@ -49,7 +81,7 @@ export const DataTableAction = defineComponent({
         {dropdownItems.length > 0 && (
           <DataTableActionDropdown items={dropdownItems} />
         )}
-      </div>
+      </DataTableActionRoot>
     );
   },
 });

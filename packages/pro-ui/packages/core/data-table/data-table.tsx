@@ -87,7 +87,7 @@ export function transformColumn<TData, TValue = any>(
             {(() => {
               const val = row.getValue(column.dataIndex as string) as TValue;
               // console.log('cell value:', column.dataIndex, val);
-              return column.render?.(val, row) || val;
+              return column.render?.(val, row.original) || val;
             })()}
           </div>
         );
