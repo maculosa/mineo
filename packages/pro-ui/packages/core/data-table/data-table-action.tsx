@@ -101,7 +101,7 @@ export const DataTableActionDropdown = defineComponent({
 
     return () => (
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger as-child>
           <Button size="icon-sm" variant="outline">
             <MoreHorizontalIcon />
           </Button>
