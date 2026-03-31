@@ -64,14 +64,31 @@ const dataSource = ref<Phone[]>([
         total: 108990,
         createdAt: '2026-03-30 15:52:32',
         action: 'Add to Cart',
-    }
-
+    },
+    {
+        id: 3,
+        brand: 'Apple',
+        price: 12899,
+        model: 'iPhone 17 Pro Max',
+        color: 'White',
+        quantity: 10,
+        spec: '16GB 5.8" 6K 120Hz 5G 512GB',
+        total: 128990,
+        createdAt: '2026-03-30 15:52:32',
+        action: 'Add to Cart',
+    },
 ])
+
+const pagination = ref({
+    page: 1,
+    pageSize: 10,
+    total: 960,
+})
 
 </script>
 
 <template>
     <ProCard class="w-200" title="Phone List">
-        <DataTable :columns="columns" :data="dataSource" />
+        <DataTable :columns="columns" :data="dataSource" :pagination="pagination" />
     </ProCard>
 </template>

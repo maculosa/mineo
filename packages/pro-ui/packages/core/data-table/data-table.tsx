@@ -21,6 +21,8 @@ import {
 } from "@mineo/ui";
 import { cn } from "@mineo/utils";
 
+import { ProPagination } from '../pagination'
+
 export function transformColumn<TData, TValue = any>(
   columns: DataTableColumn<TData, TValue>[],
 ): ColumnDef<TData>[] {
@@ -104,9 +106,17 @@ export const DataTable = defineComponent({
       type: Array as PropType<TData[]>,
       default: () => [],
     },
+    pagination: {
+      type: Object as PropType<DataTablePagination>,
+      default: () => ({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+      }),
+    }
   },
   setup(props) {
-    const { columns, data } = props as DataTableProps<TData, TValue>;
+    const { columns, data, pagination } = props as DataTableProps<TData, TValue>; 
     const sorting = ref([]);
     const columnFilters = ref([]);
     const columnVisibility = ref({});
@@ -130,6 +140,9 @@ export const DataTable = defineComponent({
         get rowSelection() {
           return rowSelection.value;
         },
+        // get pagination() {
+        //   return pagination.value;
+        // },
       },
       enableRowSelection: true,
       onSortingChange: (updater) => {
@@ -143,6 +156,9 @@ export const DataTable = defineComponent({
       },
       onRowSelectionChange: (updater) => {
         rowSelection.value = updater;
+      },
+      onPaginationChange: (updater) => {
+        pagination.value = updater;
       },
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
@@ -159,6 +175,8 @@ export const DataTable = defineComponent({
     );
 
     return () => (
+      <div>
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -202,6 +220,14 @@ export const DataTable = defineComponent({
           )}
         </TableBody>
       </Table>
+      <div class="flex justify-end mt-2">
+        <ProPagination
+          v-model:page={pagination.current}
+          v-model:pageSize={pagination.pageSize}
+          total={pagination.total}
+        />
+        </div>
+      </div>
     );
   },
 });

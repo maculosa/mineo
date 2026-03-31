@@ -174,3 +174,24 @@ export interface DataTableActionItem<TData> {
      */
     onClick: (row: Row<TData>) => void
 }
+
+export interface DataTablePagination {
+    /**
+     * 当前页码
+     * @description 当前页码, 从 1 开始
+     * @default 1
+     */
+    current: number
+    /**
+     * 每页条数
+     * @description 每页显示的条数
+     * @default 10
+     */
+    pageSize: number
+    /**
+     * 总条数
+     * @description 总条数, 用于分页
+     * @default 0
+     */
+    total: number
+}
