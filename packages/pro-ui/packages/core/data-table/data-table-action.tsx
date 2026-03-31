@@ -1,5 +1,5 @@
 import type { DataTableActionItem } from "./types";
-import { computed } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import { MoreHorizontalIcon } from "lucide-vue-next";
 import {
@@ -15,7 +15,7 @@ export const DataTableAction = defineComponent({
   name: "DataTableAction",
   props: {
     items: {
-      type: Array as PropType<DataTableActionItem[]>,
+      type: Array as PropType<DataTableActionItem<any>[]>,
       required: true,
     },
     splitNum: {
@@ -40,7 +40,7 @@ export const DataTableAction = defineComponent({
             key={item.key}
             size={iconOnly ? "icon-sm" : "sm"}
             disabled={item.disabled}
-            onClick={() => item.onClick(row)}
+            onClick={item.onClick}
           >
             {item.icon}
             {!iconOnly && item.label}
@@ -58,7 +58,7 @@ export const DataTableActionDropdown = defineComponent({
   name: "DataTableActionDropdown",
   props: {
     items: {
-      type: Array as PropType<DataTableActionItem[]>,
+      type: Array as PropType<DataTableActionItem<any>[]>,
       default: () => [],
     },
   },
@@ -84,7 +84,7 @@ export const DataTableActionDropdown = defineComponent({
                 key={item.key}
                 disabled={item.disabled}
                 variant={item.variant || undefined}
-                onClick={() => item.onClick(row)}
+                onClick={item.onClick}
               >
                 {item.icon}
                 {item.label}

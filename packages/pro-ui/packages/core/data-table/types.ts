@@ -131,7 +131,18 @@ export interface DataTableColumn<TData = any, TValue = any> {
 export interface DataTableProps<TData, TValue> {
     columns: DataTableColumn<TData, TValue>[]
     data: TData[]
+    /**
+     * 分页配置
+     * @description 分页配置, 包含当前页码、每页条数、总条数
+     * @default false
+     */
     pagination?: DataTablePagination
+    /**
+     * 是否为远程表格
+     * @description 是否为远程表格, 远程表格会从服务器获取数据, 本地表格会从 props 中获取数据
+     * @default false
+     */
+    remote?: boolean
 }
 
 /**
@@ -150,6 +161,12 @@ export interface DataTableActionItem<TData> {
      * @description 操作项的键, 用于唯一标识操作项
      */
     key: string | number
+    /**
+     * 操作项样式
+     * @description 操作项的样式, 可选值为 'primary', 'secondary', 'tertiary', 'danger'
+     * @default undefined
+     */
+    variant?: 'primary' | 'secondary' | 'tertiary' | 'danger'
     /**
      * 操作项图标
      * @description 操作项的图标, 用于显示操作项中

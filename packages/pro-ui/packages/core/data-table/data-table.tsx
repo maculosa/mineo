@@ -1,7 +1,7 @@
 import type { DataTableColumn, DataTableProps, DataTablePagination } from "./types";
 import type { PropType } from "vue";
 import type { ColumnDef } from "@tanstack/vue-table";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, toValue, computed } from "vue";
 import {
   FlexRender,
   getCoreRowModel,
@@ -58,7 +58,7 @@ export function transformColumn<TData, TValue = any>(
     };
 
     columnDefs.push({
-      accessorKey: column.dataIndex,
+      accessorKey: column.dataIndex as string,
       header: () => {
         const headerClass = cn(headerAlign(), "font-medium");
         return <div class={headerClass}>{column.title}</div>;
@@ -83,9 +83,12 @@ export function transformColumn<TData, TValue = any>(
           )
         }
         return (
-          <div class={cn(cellAlign(), column.className)}>
-            {column.render?.(row.getValue(column.dataIndex as string), row) ||
-              row.getValue(column.dataIndex as string)}
+          <div>
+            {(() => {
+              const val = row.getValue(column.dataIndex as string) as TValue;
+              // console.log('cell value:', column.dataIndex, val);
+              return column.render?.(val, row) || val;
+            })()}
           </div>
         );
       },
@@ -116,21 +119,25 @@ export const DataTable = defineComponent({
     }
   },
   setup(props) {
-    const { columns, data, pagination } = props as DataTableProps<any, any>; 
-    const sorting = ref([]);
-    const columnFilters = ref([]);
-    const columnVisibility = ref({});
-    const rowSelection = ref({});
+    const columnsValue = computed(() => props.columns as DataTableColumn<any, any>[]);
+    const dataValue = computed(() => props.data as any[]);
+    const paginationValue = computed(() => props.pagination as DataTablePagination);
+    const sorting = ref<any[]>([]);
+    const columnFilters = ref<any[]>([]);
+    const columnVisibility = ref<Record<string, any>>({});
+    const rowSelection = ref<Record<string, any>>({});
     const paginationState = ref({
-      pageIndex: pagination.current - 1,
-      pageSize: pagination.pageSize,
+      pageIndex: 0,
+      pageSize: 10,
     });
 
     const table = useVueTable({
       get data() {
-        return data;
+        return dataValue.value;
       },
-      columns: transformColumn(columns),
+      get columns() {
+        return transformColumn(columnsValue.value);
+      },
       state: {
         get sorting() {
           return sorting.value;
@@ -164,8 +171,8 @@ export const DataTable = defineComponent({
       onPaginationChange: (updater) => {
         const newPagination = typeof updater === 'function' ? updater(paginationState.value) : updater;
         paginationState.value = newPagination;
-        pagination.current = newPagination.pageIndex + 1;
-        pagination.pageSize = newPagination.pageSize;
+        paginationValue.value.current = newPagination.pageIndex + 1;
+        paginationValue.value.pageSize = newPagination.pageSize;
       },
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
@@ -173,9 +180,12 @@ export const DataTable = defineComponent({
       getFilteredRowModel: getFilteredRowModel(),
     });
 
+    const rows = computed(() => table.getRowModel().rows);
+    const headerGroups = computed(() => table.getHeaderGroups());
+
     const EmptyRow = () => (
       <TableRow>
-        <TableCell colspan={columns.length} class="h-24 text-center">
+        <TableCell colspan={columnsValue.value.length} class="h-24 text-center">
           No results.
         </TableCell>
       </TableRow>
@@ -186,7 +196,7 @@ export const DataTable = defineComponent({
 
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {headerGroups.value.map((headerGroup) => (
             <TableRow key={headerGroup.id} class="relative">
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
@@ -202,8 +212,8 @@ export const DataTable = defineComponent({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {rows.value?.length ? (
+            rows.value.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() ? "selected" : undefined}
@@ -220,7 +230,7 @@ export const DataTable = defineComponent({
             ))
           ) : (
             <TableRow>
-              <TableCell colspan={columns.length} class="h-24 text-center">
+              <TableCell colspan={columnsValue.value.length} class="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
@@ -229,9 +239,9 @@ export const DataTable = defineComponent({
       </Table>
       <div class="flex justify-end mt-2">
         <ProPagination
-          v-model:page={pagination.current}
-          v-model:pageSize={pagination.pageSize}
-          total={pagination.total}
+          v-model:page={paginationValue.value.current}
+          v-model:pageSize={paginationValue.value.pageSize}
+          total={paginationValue.value.total}
         />
         </div>
       </div>
