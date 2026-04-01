@@ -18,7 +18,8 @@ interface Phone {
 }
 
 const columns = ref<DataTableColumn<Phone>[]>([
-    // { type: 'selection' },
+    { type: 'selection' },
+    { type: 'index' },
     { title: '品牌', dataIndex: 'brand', width: 100 },
     { title: '型号', dataIndex: 'model', width: 100 },
     { title: '颜色', dataIndex: 'color', width: 100, render: (value: string) => <Badge>{value}</Badge> },
