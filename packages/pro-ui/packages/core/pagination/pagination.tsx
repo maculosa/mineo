@@ -15,6 +15,7 @@ import {
 import { defineComponent, PropType, ref, computed } from "vue";
 import type { DisplayOrder } from "./types";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-vue-next";
+import { ProNumberInput } from "../number-input";
 
 /** 计算页码数组，带有省略号逻辑 */
 function getPageNumbers(currentPage: number, pageCount: number): (number | "ellipsis")[] {
@@ -64,7 +65,7 @@ export const ProPagination = defineComponent({
     },
     displayOrder: {
       type: Array as PropType<DisplayOrder[]>,
-      default: () => ["pages", "size-picker", "quick-jumper"],
+      default: () => ["size-picker", "pages", "quick-jumper"],
     },
   },
   emits: ["update:page", "update:pageSize"],
@@ -161,8 +162,8 @@ export const ProPagination = defineComponent({
           return (
             <div class="flex items-center gap-2">
               <span class="text-sm text-muted-foreground">跳至</span>
-              <Input
-                type="number"
+              <ProNumberInput
+                showControls={false}
                 min={1}
                 max={pageCount.value}
                 v-model={jumpPage.value}
@@ -179,7 +180,7 @@ export const ProPagination = defineComponent({
     };
 
     return () => (
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center justify-between gap-4">
         <span class="text-sm text-muted-foreground">
           共 {props.total} 条
         </span>
