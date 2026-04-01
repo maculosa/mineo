@@ -1,9 +1,12 @@
 import type { Row } from "@tanstack/vue-table"
 import { VNodeChild } from "vue"
 
+export type DataTableFixed = 'left' | 'right'
+export type DataTableTextAlign = 'left' | 'center' | 'right'
 export interface DataTableTypeColumn {
     title?: string | (() => VNodeChild)
     type?: 'selection' | 'index'
+    fixed?: DataTableFixed
 }
 export interface DataTableBaseColumn<TData = any, TValue = any> {
     /**
@@ -23,13 +26,13 @@ export interface DataTableBaseColumn<TData = any, TValue = any> {
      * @description 列标题的对齐方式, 可选值为 'left', 'center', 'right'
      * @default undefined
      */
-    titleAlign?: 'left' | 'center' | 'right'
+    titleAlign?: DataTableTextAlign
     /**
      * 列数据对齐方式
      * @description 列数据的对齐方式, 可选值为 'left', 'center', 'right'
      * @default 'left'
      */
-    align?: 'left' | 'center' | 'right'
+    align?: DataTableTextAlign
     /**
      * 列标题跨列数
      * @description 列标题跨的列数, 用于合并列
@@ -114,7 +117,7 @@ export interface DataTableBaseColumn<TData = any, TValue = any> {
      * @description 列是否固定在表格的左侧或右侧
      * @default undefined
      */
-    fixed?: 'left' | 'right'
+    fixed?: DataTableFixed
     /**
      * 列选项
      * @description 自定义选择项的选项，只对 `type='selection'` 生效

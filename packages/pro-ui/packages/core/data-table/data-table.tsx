@@ -75,45 +75,57 @@ export function transformColumn<TData, TValue = any>(
     };
 
     if ((column as DataTableTypeColumn).type === "selection") {
+      const fixed = (column as DataTableTypeColumn).fixed;
       columnDefs.push({
         accessorKey: "selection",
         header: ({ table }) => (
-          <Checkbox
-            modelValue={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onUpdate:modelValue={(value: boolean | "indeterminate") =>
-              table.toggleAllRowsSelected(!!value)
-            }
-            aria-label="选择所有行"
-            class="cursor-pointer"
-          />
+          <div class="min-w-6">
+            <Checkbox
+              modelValue={
+                table.getIsAllPageRowsSelected() ||
+                (table.getIsSomePageRowsSelected() && "indeterminate")
+              }
+              onUpdate:modelValue={(value: boolean | "indeterminate") =>
+                table.toggleAllRowsSelected(!!value)
+              }
+              aria-label="选择所有行"
+              class="cursor-pointer"
+            />
+          </div>
         ),
         cell: ({ row }) => (
-          <Checkbox
-            modelValue={row.getIsSelected()}
-            onUpdate:modelValue={(value: boolean | "indeterminate") =>
-              row.toggleSelected(!!value)
-            }
-            aria-label="选择行"
-            class="cursor-pointer"
-          />
+          <div class="min-w-6">
+            <Checkbox
+              modelValue={row.getIsSelected()}
+              onUpdate:modelValue={(value: boolean | "indeterminate") =>
+                row.toggleSelected(!!value)
+              }
+              aria-label="选择行"
+              class="cursor-pointer"
+            />
+          </div>
         ),
+        meta: {
+          ...column
+        },
         enableSorting: false,
         enableHiding: false,
-        enablePinning: false,
+        enablePinning: !!fixed,
       });
     } else if ((column as DataTableTypeColumn).type === "index") {
+      const fixed = (column as DataTableTypeColumn).fixed;
       columnDefs.push({
         accessorKey: "index",
         header: ({ table }) => (
-          <div class={cn('text-center', 'w-8')}>{column.title}</div>
+          <div class={cn('text-center', 'w-8', getPinningClass(fixed))}>{column.title}</div>
         ),
         cell: ({ row }) => (
-          <div class={cn('text-center')}>{row.index + 1}</div>
+          <div class={cn('text-center', getPinningClass(fixed))}>{row.index + 1}</div>
         ),
-        enablePinning: false,
+        meta: {
+          ...column
+        },
+        enablePinning: !!fixed,
         enableHiding: false,
         enableSorting: false,
       });
