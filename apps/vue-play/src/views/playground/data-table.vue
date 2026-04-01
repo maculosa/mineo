@@ -87,7 +87,7 @@ const pagination = ref({
 </script>
 
 <template>
-    <ProCard class="w-300" title="Phone List">
+    <ProCard class="mx-4" title="Phone List">
         <DataTable :columns="columns" :data="dataSource" :pagination="pagination" />
     </ProCard>
 </template>
