@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "play": "pnpm run dev --filter vue-play",
+    "play": "pnpm --filter vue-play dev",
     "build:core": "pnpm run build --filter @mineo/core",
     "build:viteconfig": "pnpm run build --filter @mineo/viteconfig",
     "release:core": "pnpm run build:core && pnpm release:only",
