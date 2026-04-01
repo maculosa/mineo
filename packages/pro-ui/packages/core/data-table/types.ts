@@ -1,7 +1,11 @@
 import type { Row } from "@tanstack/vue-table"
 import { VNodeChild } from "vue"
 
-export interface DataTableColumn<TData = any, TValue = any> {
+export interface DataTableTypeColumn {
+    title?: string | (() => VNodeChild)
+    type?: 'selection' | 'index'
+}
+export interface DataTableBaseColumn<TData = any, TValue = any> {
     /**
      * 列标题
      * @description 列的 title 文本, 可以是字符串或函数, 函数的参数为行数据
@@ -110,7 +114,7 @@ export interface DataTableColumn<TData = any, TValue = any> {
      * @description 列是否固定在表格的左侧或右侧
      * @default undefined
      */
-    fixed?: 'left' | 'right' | false
+    fixed?: 'left' | 'right'
     /**
      * 列选项
      * @description 自定义选择项的选项，只对 `type='selection'` 生效
@@ -127,6 +131,8 @@ export interface DataTableColumn<TData = any, TValue = any> {
      */
     render?: (value: TValue, row: TData) => VNodeChild
 }
+
+export type DataTableColumn<TData = any, TValue = any> = DataTableTypeColumn | DataTableBaseColumn<TData, TValue>
 
 export interface DataTableProps<TData, TValue> {
     columns: DataTableColumn<TData, TValue>[]
