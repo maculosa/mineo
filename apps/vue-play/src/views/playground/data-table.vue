@@ -22,17 +22,20 @@ const columns = ref<DataTableColumn<Phone>[]>([
     { type: 'index', fixed: 'left' },
     { title: '品牌', dataIndex: 'brand', width: 100 },
     { title: '型号', dataIndex: 'model', width: 100 },
-    { title: '颜色', dataIndex: 'color', width: 100, render: (value: string) => <Badge>{value}</Badge> },
+    { title: '颜色', dataIndex: 'color', render: (value: string) => <Badge>{value}</Badge> },
     { title: '规格', dataIndex: 'spec', copyable: true },
-    { title: '数量', dataIndex: 'quantity' },
+    { title: '数量', dataIndex: 'quantity', width: 100, align: 'center' },
     { title: '价格', dataIndex: 'price', width: 100, currency: { symbol: '¥', decimal: 2, thousand: ',' } },
     { title: '总金额', dataIndex: 'total', currency: { symbol: '¥', decimal: 2, thousand: ',' } },
     { title: '创建时间', dataIndex: 'createdAt', width: 200 },
     { title: '操作', dataIndex: 'action',
         fixed: 'right',
-        render: (_: any, row: Phone) => {
+        align: 'center',
+        render: (_: any, row: Phone, dataIndex?: keyof Phone) => {
             const actions = [
-                { label: '添加到购物车', key: 'add', variant: 'outline', icon: <Plus /> },
+                { label: '添加到购物车', key: 'add', variant: 'outline', icon: <Plus />, onClick: () => {
+                    console.log("add to cart: ", row, dataIndex);
+                } },
                 { label: '编辑', key: 'edit', variant: 'outline', icon: <Edit /> },
                 { label: '撤销', key: 'undo', variant: 'outline', disabled: true, icon: <Undo /> },
                 { label: '删除', key: 'remove', variant: 'destructive', separator: true, icon: <Minus /> },
