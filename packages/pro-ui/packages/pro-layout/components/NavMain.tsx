@@ -1,7 +1,7 @@
 import type { PropType } from "vue";
 import type { SidebarMenuItem as NavMenuItem } from "../types";
 
-import { defineComponent, Fragment } from "vue";
+import { defineComponent, Fragment, h } from "vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -32,6 +32,12 @@ export const NavMain = defineComponent({
   setup(props) {
     const { items } = props;
 
+    const renderIcon = (icon: any) => {
+      if (icon) {
+        return h(icon, { class: "size-4" });
+      }
+    };
+
     return () => (
       <SidebarGroup>
         {props.label && <SidebarGroupLabel>{props.label}</SidebarGroupLabel>}
@@ -40,8 +46,10 @@ export const NavMain = defineComponent({
             <Collapsible key={item.id} default-open={item.isActive} as-child>
               <SidebarMenuItem>
                 <SidebarMenuButton as-child tooltip={item.title}>
-                  <component is={item.icon} />
-                  <span>{item.title}</span>
+                  <div>
+                    {renderIcon(item.icon)}
+                    <span>{item.title}</span>
+                  </div>
                 </SidebarMenuButton>
                 {item.children && (
                   <Fragment>
@@ -52,16 +60,18 @@ export const NavMain = defineComponent({
                       </SidebarMenuAction>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                        <SidebarMenuSub>
-                            {item.children.map((child) => (
-                                <SidebarMenuSubItem key={child.id}>
-                                    <SidebarMenuButton as-child>
-                                        <component is={child.icon} />
-                                        <span>{child.title}</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuSubItem>
-                            ))}
-                        </SidebarMenuSub>
+                      <SidebarMenuSub>
+                        {item.children.map((child) => (
+                          <SidebarMenuSubItem key={child.id}>
+                            <SidebarMenuButton as-child>
+                              <div>
+                                {renderIcon(child.icon)}
+                                <span>{child.title}</span>
+                              </div>
+                            </SidebarMenuButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
                     </CollapsibleContent>
                   </Fragment>
                 )}
