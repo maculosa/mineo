@@ -16,8 +16,8 @@ export const AppSidebar = defineComponent({
             <Sidebar {...props}>
                 <SidebarHeader>
                     <SidebarMenuItem>
-                        <SidebarMenuButton>
-                            <div>
+                        <SidebarMenuButton size="lg" as-child>
+                            <a>
                                 <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                     <CommandIcon class="size-4" />
                                 </div>
@@ -25,7 +25,7 @@ export const AppSidebar = defineComponent({
                                     <span class="truncate font-medium">MO19</span>
                                     <span class="truncate text-xs">Studio</span>
                                 </div>
-                            </div>
+                            </a>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarHeader>
