@@ -106,7 +106,7 @@ export function transformColumn<TData, TValue = any>(
           </div>
         ),
         meta: {
-          ...column
+          ...column,
         },
         enableSorting: false,
         enableHiding: false,
@@ -117,24 +117,33 @@ export function transformColumn<TData, TValue = any>(
       columnDefs.push({
         accessorKey: "index",
         header: ({ table }) => (
-          <div class={cn('text-center', 'w-8', getPinningClass(fixed))}>{column.title}</div>
+          <div class={cn("text-center", "w-8", getPinningClass(fixed))}>
+            {column.title}
+          </div>
         ),
         cell: ({ row }) => (
-          <div class={cn('text-center', getPinningClass(fixed))}>{row.index + 1}</div>
+          <div class={cn("text-center", getPinningClass(fixed))}>
+            {row.index + 1}
+          </div>
         ),
         meta: {
-          ...column
+          ...column,
         },
         enablePinning: !!fixed,
         enableHiding: false,
         enableSorting: false,
       });
     } else {
-      const { dataIndex, align, className, copyable, render, fixed } = column as DataTableBaseColumn;
+      const { dataIndex, align, className, copyable, render, fixed } =
+        column as DataTableBaseColumn;
       columnDefs.push({
         accessorKey: dataIndex as string,
         header: () => {
-          const headerClass = cn(headerAlign(), "font-medium", getPinningClass(fixed));
+          const headerClass = cn(
+            headerAlign(),
+            "font-medium",
+            getPinningClass(fixed),
+          );
           return <div class={headerClass}>{column.title}</div>;
         },
         cell: ({ row }) => {
@@ -209,7 +218,7 @@ export const DataTable = defineComponent({
       default: false,
     },
   },
-  emits: ['update:page', 'update:pageSize'],
+  emits: ["update:page", "update:pageSize"],
   setup(props, { emit }) {
     const columnsValue = computed(
       () => props.columns as DataTableColumn<any, any>[],
@@ -304,12 +313,12 @@ export const DataTable = defineComponent({
 
     const handlePageChange = (page: number) => {
       paginationState.value.pageIndex = page - 1;
-      emit('update:page', page);
+      emit("update:page", page);
     };
 
     const handlePageSizeChange = (pageSize: number) => {
       paginationState.value.pageSize = pageSize;
-      emit('update:pageSize', pageSize);
+      emit("update:pageSize", pageSize);
     };
 
     const EmptyRow = () => (
@@ -322,15 +331,29 @@ export const DataTable = defineComponent({
 
     return () => (
       <div>
-        <Table class={cn(props.bordered && 'border border-border')}>
+        <Table class={cn(props.bordered && "border border-border")}>
           <TableHeader>
             {headerGroups.value.map((headerGroup) => (
               <TableRow key={headerGroup.id} class="relative">
                 {headerGroup.headers.map((header) => {
-                  const columnMeta = header.column.columnDef.meta as DataTableBaseColumn;
+                  const columnMeta = header.column.columnDef
+                    .meta as DataTableBaseColumn;
                   const fixed = columnMeta?.fixed;
                   return (
-                    <TableHead key={header.id} class={getPinningClass(fixed)}>
+                    <TableHead
+                      key={header.id}
+                      class={getPinningClass(fixed)}
+                      style={{
+                        width: columnMeta.width + "px" || "auto",
+                        whiteSpace: columnMeta.width ? "normal" : "nowrap",
+                        minWidth: columnMeta.minWidth
+                          ? columnMeta.minWidth + "px"
+                          : columnMeta.width + "px" || "auto",
+                        maxWidth: columnMeta.maxWidth
+                          ? columnMeta.maxWidth + "px"
+                          : columnMeta.width + "px" || "auto",
+                      }}
+                    >
                       {!header.isPlaceholder && (
                         <FlexRender
                           render={header.column.columnDef.header}
@@ -351,10 +374,26 @@ export const DataTable = defineComponent({
                   data-state={row.getIsSelected() ? "selected" : undefined}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    const columnMeta = cell.column.columnDef.meta as DataTableBaseColumn;
+                    const columnMeta = cell.column.columnDef
+                      .meta as DataTableBaseColumn;
                     const fixed = columnMeta?.fixed;
                     return (
-                      <TableCell key={cell.id} class={getPinningClass(fixed)}>
+                      <TableCell
+                        key={cell.id}
+                        class={cn(getPinningClass(fixed), {
+                          "flex justify-center": columnMeta?.align === "center",
+                        })}
+                        style={{
+                          width: columnMeta.width + "px" || "auto",
+                          minWidth: columnMeta.minWidth
+                            ? columnMeta.minWidth + "px"
+                            : columnMeta.width + "px" || "auto",
+                          maxWidth: columnMeta.maxWidth
+                            ? columnMeta.maxWidth + "px"
+                            : columnMeta.width + "px" || "auto",
+                          whiteSpace: columnMeta.width ? "normal" : "nowrap",
+                        }}
+                      >
                         <FlexRender
                           render={cell.column.columnDef.cell}
                           props={cell.getContext()}
