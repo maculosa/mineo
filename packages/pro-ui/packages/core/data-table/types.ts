@@ -130,9 +130,10 @@ export interface DataTableBaseColumn<TData = any, TValue = any> {
      * 自定义渲染函数
      * @param value 列数据
      * @param row 行数据
+     * @param dataIndex 列数据索引
      * @default undefined
      */
-    render?: (value: TValue, row: TData) => VNodeChild
+    render?: (value: TValue, row: TData, dataIndex?: keyof TData) => VNodeChild
 }
 
 export type DataTableColumn<TData = any, TValue = any> = DataTableTypeColumn | DataTableBaseColumn<TData, TValue>

@@ -176,7 +176,7 @@ export function transformColumn<TData, TValue = any>(
             <div class={getPinningClass(fixed)}>
               {(() => {
                 const val = row.getValue(dataIndex as string) as TValue;
-                return render?.(val, row.original) || val;
+                return render?.(val, { ...row.original }, dataIndex as string) || val;
               })()}
             </div>
           );
