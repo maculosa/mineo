@@ -1,5 +1,6 @@
 import type { App } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
+import DefaultLayout from '@/layouts/default.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,7 +11,14 @@ const router = createRouter({
     },
     {
         path: '/playground',
-        component: () => import('@/views/playground/data-table.vue')
+        component: DefaultLayout,
+        redirect: '/playground/data-table',
+        children: [
+            {
+                path: 'data-table',
+                component: () => import('@/views/playground/data-table.vue')
+            }
+        ]
     },
   ],
 })
