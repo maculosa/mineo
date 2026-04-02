@@ -137,7 +137,7 @@ export interface DataTableBaseColumn<TData = any, TValue = any> {
 
 export type DataTableColumn<TData = any, TValue = any> = DataTableTypeColumn | DataTableBaseColumn<TData, TValue>
 
-export interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData = any, TValue = any> {
     columns: DataTableColumn<TData, TValue>[]
     data: TData[]
     /**
@@ -152,6 +152,12 @@ export interface DataTableProps<TData, TValue> {
      * @default false
      */
     remote?: boolean
+    /**
+     * 是否显示边框
+     * @description 是否显示边框, 为 true 时, 列会显示边框
+     * @default undefined
+     */
+    bordered?: boolean
 }
 
 /**

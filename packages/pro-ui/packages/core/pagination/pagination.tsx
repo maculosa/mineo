@@ -5,20 +5,22 @@ import {
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  Button,
-  Input,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
 } from "@mineo/ui";
-import { defineComponent, PropType, ref, computed } from "vue";
+import { defineComponent, PropType, ref, computed, watch } from "vue";
 import type { DisplayOrder } from "./types";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-vue-next";
 import { ProNumberInput } from "../number-input";
 
 /** 计算页码数组，带有省略号逻辑 */
-function getPageNumbers(currentPage: number, pageCount: number): (number | "ellipsis")[] {
+function getPageNumbers(
+  currentPage: number,
+  pageCount: number,
+): (number | "ellipsis")[] {
   if (pageCount <= 7) {
     return Array.from({ length: pageCount }, (_, i) => i + 1);
   }
@@ -70,20 +72,35 @@ export const ProPagination = defineComponent({
   },
   emits: ["update:page", "update:pageSize"],
   setup(props, { emit }) {
-    const pageCount = computed(() => Math.max(1, Math.ceil(props.total / props.pageSize)));
+    const pageCount = computed(() =>
+      Math.max(1, Math.ceil(props.total / props.pageSize)),
+    );
     const jumpPage = ref(props.page);
+    const localPage = ref(props.page);
     const displayOrder = props.displayOrder as DisplayOrder[];
 
-    const pageNumbers = computed(() => getPageNumbers(props.page, pageCount.value));
+    watch(() => props.page, (newPage) => {
+      localPage.value = newPage;
+    });
+
+    const pageNumbers = computed(() =>
+      getPageNumbers(localPage.value, pageCount.value),
+    );
 
     const handlePageChange = (newPage: number) => {
-      if (newPage >= 1 && newPage <= pageCount.value && newPage !== props.page) {
+      if (
+        newPage >= 1 &&
+        newPage <= pageCount.value &&
+        newPage !== localPage.value
+      ) {
+        localPage.value = newPage;
         emit("update:page", newPage);
       }
     };
 
     const handleJump = () => {
       const targetPage = Math.max(1, Math.min(pageCount.value, jumpPage.value));
+      localPage.value = targetPage;
       emit("update:page", targetPage);
       jumpPage.value = targetPage;
     };
@@ -100,14 +117,21 @@ export const ProPagination = defineComponent({
         case "pages":
           return (
             <Pagination
-              v-model:page={props.page}
+              page={localPage.value}
+              total={props.total}
               itemsPerPage={props.pageSize}
               class="flex items-center gap-1"
             >
               <PaginationContent class="flex items-center gap-1">
                 <PaginationPrevious
-                  class={props.page <= 1 ? "pointer-events-none opacity-50" : ""}
-                  onClick={(e: MouseEvent) => { e.preventDefault(); handlePageChange(props.page - 1); }}
+                  disabled={localPage.value <= 1}
+                  class={
+                    localPage.value <= 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                  onClick={(e: MouseEvent) => {
+                    e.preventDefault();
+                    handlePageChange(localPage.value - 1);
+                  }}
                 >
                   <ChevronLeftIcon class="h-4 w-4" />
                 </PaginationPrevious>
@@ -117,18 +141,30 @@ export const ProPagination = defineComponent({
                   ) : (
                     <PaginationItem
                       key={p}
-                      class={props.page === p ? "pointer-events-none" : "cursor-pointer"}
-                      isActive={props.page === p}
+                      class={
+                        localPage.value === p
+                          ? "pointer-events-none"
+                          : "cursor-pointer"
+                      }
+                      isActive={localPage.value === p}
                       value={p}
                       onClick={() => handlePageChange(p)}
                     >
                       {p}
                     </PaginationItem>
-                  )
+                  ),
                 )}
                 <PaginationNext
-                  class={props.page >= pageCount.value ? "pointer-events-none opacity-50" : ""}
-                  onClick={(e: MouseEvent) => { e.preventDefault(); handlePageChange(props.page + 1); }}
+                  disabled={localPage.value >= pageCount.value}
+                  class={
+                    localPage.value >= pageCount.value
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                  onClick={(e: MouseEvent) => {
+                    e.preventDefault();
+                    handlePageChange(localPage.value + 1);
+                  }}
                 >
                   <ChevronRightIcon class="h-4 w-4" />
                 </PaginationNext>
@@ -138,24 +174,20 @@ export const ProPagination = defineComponent({
 
         case "size-picker":
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" class="h-8">
-                  {props.pageSize} / 页
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+            <Select
+              modelValue={props.pageSize}
+              onUpdate:modelValue={handleSizeChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="每页" />
+              </SelectTrigger>
+              <SelectContent>
                 {props.pageSizes.map((s) => (
-                  <DropdownMenuItem
-                    key={s}
-                    class={props.pageSize === s ? "bg-accent" : ""}
-                    onClick={() => handleSizeChange(s)}
-                  >
-                    {s} / 页
-                  </DropdownMenuItem>
+                  <SelectItem value={s}>{s} / 页</SelectItem>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </SelectContent>
+            </Select>
+            
           );
 
         case "quick-jumper":
@@ -168,7 +200,9 @@ export const ProPagination = defineComponent({
                 max={pageCount.value}
                 v-model={jumpPage.value}
                 class="h-8 w-16 text-center"
-                onKeydown={(e: KeyboardEvent) => { if (e.key === "Enter") handleJump(); }}
+                onKeydown={(e: KeyboardEvent) => {
+                  if (e.key === "Enter") handleJump();
+                }}
               />
               <span class="text-sm text-muted-foreground">页</span>
             </div>
@@ -180,10 +214,8 @@ export const ProPagination = defineComponent({
     };
 
     return () => (
-      <div class="flex items-center justify-between gap-4">
-        <span class="text-sm text-muted-foreground">
-          共 {props.total} 条
-        </span>
+      <div class="flex-1 flex items-center justify-between gap-4">
+        <span class="text-sm text-muted-foreground">共 {props.total} 条</span>
         <div class="flex items-center gap-4">
           {displayOrder.map((name) => (
             <div key={name}>{renderComponent(name)}</div>

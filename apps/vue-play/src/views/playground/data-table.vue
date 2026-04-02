@@ -84,10 +84,26 @@ const pagination = ref({
     total: 960,
 })
 
+const handleChangePage = (page: number) => {
+    console.log("page: ", page);
+    
+    pagination.value.current = page;
+}
+
+const handleChangePageSize = (pageSize: number) => {
+    console.log("pageSize: ", pageSize);
+    pagination.value.pageSize = pageSize;
+}
+
+
+
 </script>
 
 <template>
     <ProCard class="mx-4" title="Phone List">
-        <DataTable :columns="columns" :data="dataSource" :pagination="pagination" />
+        <DataTable bordered :columns="columns" :data="dataSource" :pagination="pagination"
+            @update:page="handleChangePage"
+            @update:pageSize="handleChangePageSize"
+        />
     </ProCard>
 </template>

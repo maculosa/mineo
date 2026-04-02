@@ -200,8 +200,17 @@ export const DataTable = defineComponent({
         total: 0,
       }),
     },
+    bordered: {
+      type: Boolean as PropType<DataTableProps["bordered"]>,
+      default: undefined,
+    },
+    remote: {
+      type: Boolean as PropType<DataTableProps["remote"]>,
+      default: false,
+    },
   },
-  setup(props) {
+  emits: ['update:page', 'update:pageSize'],
+  setup(props, { emit }) {
     const columnsValue = computed(
       () => props.columns as DataTableColumn<any, any>[],
     );
@@ -279,6 +288,7 @@ export const DataTable = defineComponent({
           typeof updater === "function"
             ? updater(paginationState.value)
             : updater;
+
         paginationState.value = newPagination;
         paginationValue.value.current = newPagination.pageIndex + 1;
         paginationValue.value.pageSize = newPagination.pageSize;
@@ -292,6 +302,16 @@ export const DataTable = defineComponent({
     const rows = computed(() => table.getRowModel().rows);
     const headerGroups = computed(() => table.getHeaderGroups());
 
+    const handlePageChange = (page: number) => {
+      paginationState.value.pageIndex = page - 1;
+      emit('update:page', page);
+    };
+
+    const handlePageSizeChange = (pageSize: number) => {
+      paginationState.value.pageSize = pageSize;
+      emit('update:pageSize', pageSize);
+    };
+
     const EmptyRow = () => (
       <TableRow>
         <TableCell colspan={columnsValue.value.length} class="h-24 text-center">
@@ -302,7 +322,7 @@ export const DataTable = defineComponent({
 
     return () => (
       <div>
-        <Table>
+        <Table class={cn(props.bordered && 'border border-border')}>
           <TableHeader>
             {headerGroups.value.map((headerGroup) => (
               <TableRow key={headerGroup.id} class="relative">
@@ -354,6 +374,8 @@ export const DataTable = defineComponent({
             v-model:page={paginationValue.value.current}
             v-model:pageSize={paginationValue.value.pageSize}
             total={paginationValue.value.total}
+            onUpdate:page={handlePageChange}
+            onUpdate:pageSize={handlePageSizeChange}
           />
         </div>
       </div>
