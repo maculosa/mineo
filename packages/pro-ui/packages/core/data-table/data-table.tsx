@@ -78,8 +78,9 @@ export function transformColumn<TData, TValue = any>(
       const fixed = (column as DataTableTypeColumn).fixed;
       columnDefs.push({
         accessorKey: "selection",
+        id: 'selection',
         header: ({ table }) => (
-          <div class="min-w-6">
+          <div class="w-6">
             <Checkbox
               modelValue={
                 table.getIsAllPageRowsSelected() ||
@@ -107,6 +108,7 @@ export function transformColumn<TData, TValue = any>(
         ),
         meta: {
           ...column,
+          width: 32,
         },
         enableSorting: false,
         enableHiding: false,
@@ -116,33 +118,38 @@ export function transformColumn<TData, TValue = any>(
       const fixed = (column as DataTableTypeColumn).fixed;
       columnDefs.push({
         accessorKey: "index",
+        id: 'index',
         header: ({ table }) => (
-          <div class={cn("text-center", "w-8", getPinningClass(fixed))}>
-            {column.title}
-          </div>
+            column.title
         ),
         cell: ({ row }) => (
-          <div class={cn("text-center", getPinningClass(fixed))}>
-            {row.index + 1}
-          </div>
+            row.index + 1
         ),
         meta: {
           ...column,
+          width: 48,
         },
         enablePinning: !!fixed,
         enableHiding: false,
         enableSorting: false,
       });
     } else {
-      const { dataIndex, align, className, copyable, render, fixed } =
-        column as DataTableBaseColumn;
+      const { dataIndex, align, className, copyable, render, fixed, ellipsis } = column as DataTableBaseColumn;
+      const cellClasses = cn(
+        cellAlign(),
+        className,
+        ellipsis && "truncate",
+        !ellipsis && "whitespace-normal break-words"
+      );
       columnDefs.push({
         accessorKey: dataIndex as string,
+        id: dataIndex as string,
         header: () => {
           const headerClass = cn(
             headerAlign(),
             "font-medium",
             getPinningClass(fixed),
+            ellipsis && "truncate"
           );
           return <div class={headerClass}>{column.title}</div>;
         },
@@ -159,7 +166,7 @@ export function transformColumn<TData, TValue = any>(
               .replace(/\B(?=(\d{3})+(?!\d))/g, thousand);
             const currencyAlign = align || "text-right";
             return (
-              <div class={cn(cellAlign(), className, getPinningClass(fixed))}>
+              <div class={cellClasses}>
                 {symbol}
                 {formattedValue}
               </div>
@@ -167,13 +174,13 @@ export function transformColumn<TData, TValue = any>(
           }
           if (copyable) {
             return (
-              <Typography copyable class={getPinningClass(fixed)}>
+              <Typography copyable class={cellClasses}>
                 {row.getValue(dataIndex as string)}
               </Typography>
             );
           }
           return (
-            <div class={getPinningClass(fixed)}>
+            <div class={cellClasses}>
               {(() => {
                 const val = row.getValue(dataIndex as string) as TValue;
                 return render?.(val, { ...row.original }, dataIndex as string) || val;
@@ -331,83 +338,86 @@ export const DataTable = defineComponent({
 
     return () => (
       <div>
-        <Table class={cn(props.bordered && "border border-border")}>
-          <TableHeader>
-            {headerGroups.value.map((headerGroup) => (
-              <TableRow key={headerGroup.id} class="relative">
-                {headerGroup.headers.map((header) => {
-                  const columnMeta = header.column.columnDef
-                    .meta as DataTableBaseColumn;
-                  const fixed = columnMeta?.fixed;
-                  return (
-                    <TableHead
-                      key={header.id}
-                      class={getPinningClass(fixed)}
-                      style={{
-                        width: columnMeta.width + "px" || "auto",
-                        whiteSpace: columnMeta.width ? "normal" : "nowrap",
-                        minWidth: columnMeta.minWidth
-                          ? columnMeta.minWidth + "px"
-                          : columnMeta.width + "px" || "auto",
-                        maxWidth: columnMeta.maxWidth
-                          ? columnMeta.maxWidth + "px"
-                          : columnMeta.width + "px" || "auto",
-                      }}
-                    >
-                      {!header.isPlaceholder && (
-                        <FlexRender
-                          render={header.column.columnDef.header}
-                          props={header.getContext()}
-                        />
-                      )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {rows.value?.length ? (
-              rows.value.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() ? "selected" : undefined}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const columnMeta = cell.column.columnDef
+        <div class="overflow-x-auto">
+          <Table class={cn(props.bordered && "border border-border")}>
+            <TableHeader>
+              {headerGroups.value.map((headerGroup) => (
+                <TableRow key={headerGroup.id} class="relative">
+                  {headerGroup.headers.map((header) => {
+                    const columnMeta = header.column.columnDef
                       .meta as DataTableBaseColumn;
                     const fixed = columnMeta?.fixed;
                     return (
-                      <TableCell
-                        key={cell.id}
-                        class={cn(getPinningClass(fixed), {
-                          "flex justify-center": columnMeta?.align === "center",
-                        })}
+                      <TableHead
+                        key={header.id}
+                        class={getPinningClass(fixed)}
                         style={{
                           width: columnMeta.width + "px" || "auto",
+                          whiteSpace: columnMeta.width ? "normal" : "nowrap",
                           minWidth: columnMeta.minWidth
                             ? columnMeta.minWidth + "px"
                             : columnMeta.width + "px" || "auto",
                           maxWidth: columnMeta.maxWidth
                             ? columnMeta.maxWidth + "px"
                             : columnMeta.width + "px" || "auto",
-                          whiteSpace: columnMeta.width ? "normal" : "nowrap",
                         }}
                       >
-                        <FlexRender
-                          render={cell.column.columnDef.cell}
-                          props={cell.getContext()}
-                        />
-                      </TableCell>
+                        {!header.isPlaceholder && (
+                          <FlexRender
+                            render={header.column.columnDef.header}
+                            props={header.getContext()}
+                          />
+                        )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
-              ))
-            ) : (
-              <EmptyRow />
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {rows.value?.length ? (
+                rows.value.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() ? "selected" : undefined}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      const columnMeta = cell.column.columnDef
+                        .meta as DataTableBaseColumn;
+                      const fixed = columnMeta?.fixed;
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          class={cn(getPinningClass(fixed), {
+                            'text-center': cell.column.columnDef.id === 'index',
+                            // "flex justify-center items-center": columnMeta?.align === "center",
+                          })}
+                          style={{
+                            width: columnMeta.width + "px" || "auto",
+                            whiteSpace: columnMeta.width ? "normal" : "nowrap",
+                            minWidth: columnMeta.minWidth
+                              ? columnMeta.minWidth + "px"
+                              : columnMeta.width + "px" || "auto",
+                            maxWidth: columnMeta.maxWidth
+                              ? columnMeta.maxWidth + "px"
+                              : columnMeta.width + "px" || "auto",
+                          }}
+                        >
+                          <FlexRender
+                            render={cell.column.columnDef.cell}
+                            props={cell.getContext()}
+                          />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : (
+                <EmptyRow />
+              )}
+            </TableBody>
+          </Table>
+        </div>
         <div class="flex justify-end mt-2">
           <ProPagination
             v-model:page={paginationValue.value.current}
