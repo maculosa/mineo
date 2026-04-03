@@ -6,7 +6,7 @@ import {
   onMounted,
   nextTick,
 } from "vue";
-import type { DataListProps, DataListEmits, DataListPagination, DataListFilter, DataListSort, DataListAction } from "./types";
+import type { DataListProps, DataListEmits, DataListPagination, DataListFilter, DataListSort, DataListAction, DataListSchema } from "./types";
 import {
   filterData,
   sortData,
@@ -166,7 +166,7 @@ export const DataList = defineComponent({
     "filter-change",
     "sort-change",
     "item-edit",
-  ] as unknown as DataListEmits,
+  ],
   setup(props, { emit }) {
     // 响应式状态
     const localSelectedItems = ref([...(props.selectedItems || [])]);
@@ -217,7 +217,7 @@ export const DataList = defineComponent({
     });
 
     const skeletonData = computed(() => {
-      return generateSkeletonData(pageSize.value, props.schema || []);
+      return generateSkeletonData(pageSize.value, (props.schema || []) as DataListSchema[]);
     });
 
     // 方法
@@ -432,7 +432,7 @@ export const DataList = defineComponent({
             )}
           </CardHeader>
           <CardContent class="space-y-2">
-            {props.schema.map((fieldSchema) => {
+            {props.schema.map((fieldSchema: DataListSchema) => {
               const {
                 field,
                 label,
@@ -595,7 +595,7 @@ export const DataList = defineComponent({
             </span>
           </div>
           <div class="flex gap-2">
-            {props.batchActions.map((action) => (
+            {props.batchActions.map((action: DataListAction) => (
               <Button
                 key={action.key}
                 variant={action.variant}
@@ -620,7 +620,7 @@ export const DataList = defineComponent({
 
       return (
         <div class="flex flex-wrap gap-4 mb-4">
-          {props.schema.map((fieldSchema) => {
+          {props.schema.map((fieldSchema: DataListSchema) => {
             const { field, label, type = "text" } = fieldSchema;
             const currentFilter = localFilters.value.find(
               (f) => f.field === field,
@@ -669,7 +669,7 @@ export const DataList = defineComponent({
         <div class="flex items-center gap-4 mb-4">
           <span class="text-sm font-medium">Sort by:</span>
           <div class="flex gap-2">
-            {props.schema.map((fieldSchema) => {
+            {props.schema.map((fieldSchema: DataListSchema) => {
               const { field, label } = fieldSchema;
               const isActive = localSort.value?.field === field;
               const direction = localSort.value?.direction;
@@ -710,13 +710,13 @@ export const DataList = defineComponent({
         </div>
 
         {/* 数据列表 */}
-        <div class="flex-1 overflow-y-auto">
+        <div class="flex-1 overflow-y-auto min-h-0">
           {isLoading.value || props.loading ? (
             renderLoading()
           ) : props.error ? (
             renderError()
           ) : paginatedData.value.length > 0 ? (
-              <div style={gridStyle.value} class={cn(props.containerClass, "min-h-0")}>
+              <div style={gridStyle.value} class={cn(props.containerClass)}>
                 {paginatedData.value.map((item, index) =>
                   renderItem(item, index),
                 )}
@@ -763,7 +763,7 @@ const DataListItemAction = defineComponent({
 
     return () => (
       <div class="flex items-center gap-2">
-        {displayItems.map((action) => (
+        {displayItems.map((action: DataListAction) => (
           <Button
             key={action.key}
             variant={action.variant}
@@ -783,7 +783,7 @@ const DataListItemAction = defineComponent({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {dropdownItems.map((action) => (
+              {dropdownItems.map((action: DataListAction) => (
                 <>
                   {action.separator && (
                     <DropdownMenuSeparator key={`${action.key}-separator`} />
