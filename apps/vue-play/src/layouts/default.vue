@@ -7,16 +7,25 @@ import { DefaultLayout } from '@mineo/pro-ui';
 
 const menuItems = ref([
     {
+        id: 'playground',
         title: 'Playground',
         url: '/playground',
         icon: Command,
         isActive: true,
         children: [
             {
+                id: 'data-table',
                 title: 'Data Table',
                 url: '/playground/data-table',
                 icon: Command,
                 isActive: true,
+            },
+            {
+                id: 'data-list',
+                title: 'Data List',
+                url: '/playground/data-list',
+                icon: Command,
+                isActive: false,
             },
         ],
     }

@@ -159,6 +159,36 @@ export interface DataTableProps<TData = any, TValue = any> {
      * @default undefined
      */
     bordered?: boolean
+    /**
+     * 是否加载中
+     * @description 表格是否处于加载状态
+     * @default false
+     */
+    loading?: boolean
+    /**
+     * 错误信息
+     * @description 表格加载错误时的错误信息
+     * @default undefined
+     */
+    error?: string
+    /**
+     * 重试回调
+     * @description 表格加载错误时的重试按钮回调
+     * @default undefined
+     */
+    onRetry?: () => void
+    /**
+     * 是否启用虚拟滚动
+     * @description 是否启用虚拟滚动，用于处理大数据量
+     * @default false
+     */
+    enableVirtualization?: boolean
+    /**
+     * 虚拟滚动容器高度
+     * @description 虚拟滚动容器的高度，单位为像素
+     * @default 400
+     */
+    virtualizationHeight?: number
 }
 
 /**

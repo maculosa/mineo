@@ -17,7 +17,11 @@ const router = createRouter({
             {
                 path: 'data-table',
                 component: () => import('@/views/playground/data-table.vue')
-            }
+            },
+            {
+                path: 'data-list',
+                component: () => import('@/views/playground/data-list.vue')
+            },
         ]
     },
   ],

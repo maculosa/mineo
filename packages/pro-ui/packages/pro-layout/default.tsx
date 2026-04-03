@@ -19,9 +19,9 @@ export const DefaultLayout = defineComponent({
                 <SidebarInset class="w-0 flex-1">
                     <LayoutHeader />
                     <main class="flex-1 flex overflow-hidden">
-                        <ScrollArea class="flex-1 w-full">
+                        {/* <ScrollArea class="flex-1 w-full"> */}
                             {slots.default?.()}
-                        </ScrollArea>
+                        {/* </ScrollArea> */}
                     </main>
                 </SidebarInset>
             </SidebarProvider>

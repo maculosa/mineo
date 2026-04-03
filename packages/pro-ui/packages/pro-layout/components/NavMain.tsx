@@ -2,6 +2,7 @@ import type { PropType } from "vue";
 import type { SidebarMenuItem as NavMenuItem } from "../types";
 
 import { defineComponent, Fragment, h } from "vue";
+import { useRouter } from "vue-router";
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,9 +32,14 @@ export const NavMain = defineComponent({
   },
   setup(props) {
     const { items } = props;
+    const router = useRouter();
+
+    const handleClick = (url: string) => {
+      router.push(url);
+    };
 
     const renderIcon = (icon: any) => {
-      if (icon) {
+      if (icon && typeof icon === 'object') {
         return h(icon, { class: "size-4" });
       }
     };
@@ -46,7 +52,7 @@ export const NavMain = defineComponent({
             <Collapsible key={item.id} default-open={item.isActive} as-child>
               <SidebarMenuItem>
                 <SidebarMenuButton as-child tooltip={item.title}>
-                  <div>
+                  <div class="cursor-pointer">
                     {renderIcon(item.icon)}
                     <span>{item.title}</span>
                   </div>
@@ -62,9 +68,9 @@ export const NavMain = defineComponent({
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.children.map((child) => (
-                          <SidebarMenuSubItem key={child.id}>
+                          <SidebarMenuSubItem key={child.id} onClick={() => handleClick(child.url)}>
                             <SidebarMenuButton as-child>
-                              <div>
+                              <div class="cursor-pointer">
                                 {renderIcon(child.icon)}
                                 <span>{child.title}</span>
                               </div>
