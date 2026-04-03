@@ -6,13 +6,7 @@ import {
   onMounted,
   nextTick,
 } from "vue";
-import type {
-  DataListProps,
-  DataListEmits,
-  DataListPagination,
-  DataListFilter,
-  DataListSort,
-} from "./types";
+import type { DataListProps, DataListEmits, DataListPagination, DataListFilter, DataListSort, DataListAction } from "./types";
 import {
   filterData,
   sortData,
@@ -499,7 +493,7 @@ export const DataList = defineComponent({
           </CardContent>
           {props.actions.length > 0 && (
             <CardFooter class="flex justify-end gap-2">
-              <DataListAction items={props.actions} item={item} />
+              <DataListItemAction items={props.actions} item={item} />
             </CardFooter>
           )}
         </Card>
@@ -716,19 +710,21 @@ export const DataList = defineComponent({
         </div>
 
         {/* 数据列表 */}
-        {isLoading.value || props.loading ? (
-          renderLoading()
-        ) : props.error ? (
-          renderError()
-        ) : paginatedData.value.length > 0 ? (
-            <div style={gridStyle.value} class={cn(props.containerClass)}>
-              {paginatedData.value.map((item, index) =>
-                renderItem(item, index),
-              )}
-            </div>
-        ) : (
-          renderEmpty()
-        )}
+        <div class="flex-1 overflow-y-auto">
+          {isLoading.value || props.loading ? (
+            renderLoading()
+          ) : props.error ? (
+            renderError()
+          ) : paginatedData.value.length > 0 ? (
+              <div style={gridStyle.value} class={cn(props.containerClass, "min-h-0")}>
+                {paginatedData.value.map((item, index) =>
+                  renderItem(item, index),
+                )}
+              </div>
+          ) : (
+            renderEmpty()
+          )}
+        </div>
 
         {/* 分页 */}
         {props.paginationEnabled && !props.loading && !props.error && (
@@ -748,11 +744,11 @@ export const DataList = defineComponent({
 });
 
 // 操作按钮组件
-const DataListAction = defineComponent({
-  name: "DataListAction",
+const DataListItemAction = defineComponent({
+  name: "DataListItemAction",
   props: {
     items: {
-      type: Array,
+      type: Array as () => DataListAction[],
       required: true,
     },
     item: {
@@ -806,6 +802,23 @@ const DataListAction = defineComponent({
           </DropdownMenu>
         )}
       </div>
+    );
+  },
+});
+
+const ListContent = defineComponent({
+  name: "ListContent",
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props, { slots }) {
+    return () => (
+      <ScrollArea>
+        {slots.default?.({ item: props.item })}
+      </ScrollArea>
     );
   },
 });
