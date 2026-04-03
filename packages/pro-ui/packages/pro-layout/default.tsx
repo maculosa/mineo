@@ -2,7 +2,7 @@ import { defineComponent } from "vue";
 
 import { AppSidebar } from "./components/AppSidebar";
 import { defaultLayoutProps } from "./types";
-import { SidebarInset, SidebarProvider } from "@mineo/ui";
+import { ScrollArea, SidebarInset, SidebarProvider } from "@mineo/ui";
 import { LayoutHeader } from "./components/LayoutHeader";
 
 export const DefaultLayout = defineComponent({
@@ -14,12 +14,14 @@ export const DefaultLayout = defineComponent({
         const { menus } = props;
 
         return () => (
-            <SidebarProvider>
+            <SidebarProvider class="w-screen h-screen overflow-hidden">
                 <AppSidebar menus={menus} />
-                <SidebarInset>
+                <SidebarInset class="w-0 flex-1">
                     <LayoutHeader />
-                    <main>
-                        {slots.default?.()}
+                    <main class="flex-1 flex overflow-hidden">
+                        <ScrollArea class="flex-1 w-full">
+                            {slots.default?.()}
+                        </ScrollArea>
                     </main>
                 </SidebarInset>
             </SidebarProvider>
