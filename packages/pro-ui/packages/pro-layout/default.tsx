@@ -11,11 +11,11 @@ export const DefaultLayout = defineComponent({
         ...defaultLayoutProps
     },
     setup(props, { slots }) {
-        const { menus } = props;
+        const { menus, labs } = props;
 
         return () => (
             <SidebarProvider class="w-screen h-screen overflow-hidden">
-                <AppSidebar menus={menus} />
+                <AppSidebar menus={menus} labs={labs} />
                 <SidebarInset class="w-0 flex-1">
                     <LayoutHeader />
                     <main class="flex-1 flex overflow-hidden">

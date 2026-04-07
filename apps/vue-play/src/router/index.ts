@@ -10,6 +10,17 @@ const router = createRouter({
         redirect: '/playground'
     },
     {
+        path: '/labs/flex-scroll-area',
+        component: () => import('@/views/labs/flex-scroll-area.vue')
+        // component: DefaultLayout,
+        // redirect: '/labs/flex-scroll-area',
+        // children: [
+            // {
+                // path: 'flex-scroll-area',
+            // },
+        // ]
+    },
+    {
         path: '/playground',
         component: DefaultLayout,
         redirect: '/playground/data-table',

@@ -699,24 +699,24 @@ export const DataList = defineComponent({
 
     // 主渲染
     return () => (
-      <div class="flex-1 flex flex-col">
+      <div class="flex-1 flex flex-col min-h-0 px-4">
         {/* 批量操作 */}
         {renderBatchActions()}
 
         {/* 过滤和排序控制 */}
-        <div class="mb-4">
+        <div class="p-4 bg-background border-b border-border">
           {renderFilters()}
           {renderSortControls()}
         </div>
 
         {/* 数据列表 */}
-        <div class="flex-1 overflow-y-auto min-h-0">
+        <ScrollArea class="flex-1 min-h-0 pr-4">
           {isLoading.value || props.loading ? (
             renderLoading()
           ) : props.error ? (
             renderError()
           ) : paginatedData.value.length > 0 ? (
-              <div style={gridStyle.value} class={cn(props.containerClass)}>
+              <div style={gridStyle.value} class={cn(props.containerClass, 'py-4')}>
                 {paginatedData.value.map((item, index) =>
                   renderItem(item, index),
                 )}
@@ -724,11 +724,11 @@ export const DataList = defineComponent({
           ) : (
             renderEmpty()
           )}
-        </div>
+        </ScrollArea>
 
         {/* 分页 */}
         {props.paginationEnabled && !props.loading && !props.error && (
-          <div class="mt-4 flex justify-end">
+          <div class="py-4 border-t border-border bg-background flex justify-end">
             <ProPagination
               v-model:page={currentPage.value}
               v-model:pageSize={pageSize.value}
@@ -802,23 +802,6 @@ const DataListItemAction = defineComponent({
           </DropdownMenu>
         )}
       </div>
-    );
-  },
-});
-
-const ListContent = defineComponent({
-  name: "ListContent",
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props, { slots }) {
-    return () => (
-      <ScrollArea>
-        {slots.default?.({ item: props.item })}
-      </ScrollArea>
     );
   },
 });

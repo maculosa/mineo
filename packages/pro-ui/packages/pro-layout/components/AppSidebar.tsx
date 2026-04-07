@@ -3,6 +3,7 @@ import { appSidebarProps } from "../types";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "@mineo/ui";
 import { CommandIcon } from "lucide-vue-next";
 import { NavMain } from "./NavMain";
+import { NavSecondary } from "./NavSecondary";
 
 export const AppSidebar = defineComponent({
     name: 'AppSidebar',
@@ -10,7 +11,7 @@ export const AppSidebar = defineComponent({
         ...appSidebarProps
     },
     setup(props, { slots }) {
-        const { menus } = props;
+        const { menus, labs } = props;
 
         return () => (
             <Sidebar {...props}>
@@ -31,6 +32,7 @@ export const AppSidebar = defineComponent({
                 </SidebarHeader>
                 <SidebarContent>
                     <NavMain items={menus} />
+                    <NavSecondary items={labs} class="mt-auto" />
                 </SidebarContent>
                 {slots.footer && (
                     <SidebarFooter>

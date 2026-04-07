@@ -19,6 +19,10 @@ export const appSidebarProps = {
         type: Array as PropType<SidebarMenuItem[]>,
         default: () => [],
     },
+    labs: {
+        type: Array as PropType<SidebarMenuItem[]>,
+        default: () => [],
+    },
     variant: {
         type: String as PropType<AppSidebarProps['variant']>,
         default: 'inset',

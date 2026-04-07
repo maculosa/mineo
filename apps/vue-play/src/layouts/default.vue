@@ -31,10 +31,20 @@ const menuItems = ref([
     }
 ])
 
+const labs = ref([
+    {
+        id: 'flex-scroll-area',
+        title: 'Flex Scroll Area',
+        url: '/labs/flex-scroll-area',
+        icon: Command,
+        isActive: true,
+    },
+])
+
 </script>
 
 <template>
-    <DefaultLayout :menus="menuItems">
+    <DefaultLayout :menus="menuItems" :labs="labs">
         <router-view v-slot="{ Component }">
             <Transition name="fade">
                 <component :is="Component" />

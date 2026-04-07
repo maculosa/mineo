@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 m-4 flex flex-col">
+    <div class="flex-1 flex flex-col">
         <DataList
             :data="data"
             :schema="schema"
@@ -9,7 +9,7 @@
             :pagination="pagination"
             :loading="loading"
             :error="error"
-            :grid-columns="3"
+            :grid-columns="4"
             :grid-gap="16"
             @update:page="handlePageChange"
             @update:pageSize="handlePageSizeChange"
